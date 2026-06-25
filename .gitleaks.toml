@@ -1,0 +1,16 @@
+# Gitleaks config for the dotfiles repo.
+# Extends the default ruleset; add allowlist entries only for known-safe
+# placeholders so the pre-commit hook stays strict.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Known-safe placeholders in committed config/templates"
+regexes = [
+  '''YOUR_[A-Z_]+_HERE''',
+  '''example\.com''',
+  '''<[a-z-]+>''',
+]
+paths = [
+  '''docs/SPEC\.md''',
+]

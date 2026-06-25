@@ -1,0 +1,63 @@
+# ============================================================
+# SECRET-SAFETY DENYLIST for a PUBLIC dotfiles repo.
+# Default posture: this repo tracks ONLY config files that are
+# explicitly added. Anything resembling a credential is ignored.
+# ============================================================
+
+# --- Credentials / keys / tokens ---
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*.gpg
+*.asc
+*_token
+*_secret
+*.secret
+.env
+.env.*
+*.env
+credentials*
+*credentials*
+.credentials.json
+oauth_creds.json
+*.oauth
+.netrc
+.npmrc
+.pypirc
+authorized_keys
+known_hosts
+
+# --- Agent / tool state that may carry tokens or PII ---
+.claude/.credentials.json
+.gemini/oauth_creds.json
+.gnhf/
+.no-mistakes/
+**/evidence/
+*.session
+*.history
+history.jsonl
+
+# --- OS / editor noise ---
+.DS_Store
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# --- Build / deps ---
+node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+
+# --- Local-only overrides ---
+*.local
+local.*
