@@ -1,0 +1,13 @@
+# gnhf config (~/.gnhf/config.yml). No secrets here.
+# Default agent for overnight autonomous loops.
+agent: claude
+
+# Abort after this many consecutive failed iterations.
+maxConsecutiveFailures: 3
+
+# Keep the machine awake during a run (Linux: systemd-inhibit).
+preventSleep: true
+
+# NOTE: token and iteration caps are runtime-only flags, not config keys.
+# Use the `gnhf-night` wrapper (in ~/.local/bin) for safe default caps, or pass
+#   --max-iterations <n> --max-tokens <n> --stop-when "<condition>"

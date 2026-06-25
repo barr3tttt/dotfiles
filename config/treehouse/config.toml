@@ -1,0 +1,8 @@
+# User-level treehouse defaults (~/.config/treehouse/config.toml).
+# Per-repo treehouse.toml (via `treehouse init`) overrides these.
+
+# Max pooled worktrees kept warm across all repos.
+max_trees = 8
+
+# Worktree root. Empty = $HOME (worktrees live under {root}/.treehouse/).
+root = ""
