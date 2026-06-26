@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Voice Dictate
+Comment=Whisper push-to-talk dictation (toggle)
+Exec=/home/barrett/.local/bin/voice-dictate
+Icon=audio-input-microphone
+Terminal=false
+Categories=Utility;
+NoDisplay=false

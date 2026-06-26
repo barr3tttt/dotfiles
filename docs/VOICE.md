@@ -15,9 +15,10 @@ prompt) -> `ydotool` (types into the focused window; clipboard fallback).
   treehouse, Lavish, AXI transcribe with correct spelling. Edit it freely.
 
 ## One-time setup
-1. `bash /tmp/phase0-sudo.sh`  - installs the ydotool package.
-2. `bash /tmp/phase7-sudo.sh`  - uinput permissions + ydotoold user service.
-3. Log out and back in (for `input` group membership to take effect).
+1. Install packages: `sudo dnf install ydotool wl-clipboard`.
+2. `bash install/ydotool-setup.sh` - installs ydotoold as a root system service
+   (socket at `/run/ydotoold.socket`, owned by you). Reboot-proof; no relogin.
+3. `export YDOTOOL_SOCKET=/run/ydotoold.socket` (already added to ~/.bashrc).
 4. Bind a KDE global shortcut (see below).
 
 ## KDE global shortcut (Plasma 6, Wayland)
@@ -34,4 +35,6 @@ Press once to start recording, press again to stop, transcribe, and type the tex
 ## Verified
 - whisper-cli transcription (bundled jfk.wav) accurate.
 - Record -> wav -> whisper pipeline works with `pw-record`.
-- Injection + global shortcut: complete after the two sudo scripts + re-login.
+- ydotool injection through the root ydotoold service: PASS.
+- KDE shortcut Meta+Alt+D bound via kglobalshortcutsrc (confirm with a keypress;
+  adjust in System Settings -> Keyboard -> Shortcuts if needed).
