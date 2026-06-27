@@ -72,6 +72,23 @@
   .arrow { color: var(--muted); }
   code.inl { background: var(--highlight); padding: 1px 5px; border-radius: 4px; color: var(--foam); font-size: .8rem; }
   footer { margin-top: 28px; text-align: center; color: var(--muted); font-size: .76rem; }
+  .howto {
+    background: linear-gradient(180deg, rgba(246,193,119,.10), rgba(42,39,63,.6));
+    border: 1px solid var(--gold); border-radius: 12px; padding: 16px 18px; margin-bottom: 18px;
+  }
+  .howto-title { font-size: 1rem; font-weight: 700; color: var(--gold); margin-bottom: 12px; }
+  .howto-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,280px),1fr)); gap: 16px; }
+  .howto-col { background: var(--base); border-radius: 8px; padding: 12px 14px; }
+  .howto-h { font-size: .85rem; font-weight: 700; margin-bottom: 8px; }
+  .howto-steps { display: flex; flex-direction: column; gap: 6px; font-size: .85rem; }
+  .howto-steps span { display: flex; align-items: baseline; gap: 8px; }
+  .num {
+    flex: 0 0 auto; width: 18px; height: 18px; border-radius: 50%; background: var(--gold);
+    color: var(--base); font-weight: 700; font-size: .72rem; display: inline-flex;
+    align-items: center; justify-content: center;
+  }
+  .num.c-pine-bg { background: var(--pine); color: var(--base); }
+  .howto-note { font-size: .76rem; color: var(--subtle); margin-top: 9px; line-height: 1.45; }
 </style>
 </head>
 <body>
@@ -83,6 +100,28 @@
       <b style="color:var(--gold)">Yellow keys</b> = the prefix (Ctrl+a). &nbsp; The big idea: a <b style="color:var(--foam)">session</b> holds <b style="color:var(--foam)">windows</b> (tabs), a window holds <b style="color:var(--foam)">panes</b> (splits). Detach and your work keeps running on a background server.
     </div>
   </header>
+
+  <div class="howto">
+    <div class="howto-title">How to press a tmux key (read this first)</div>
+    <div class="howto-grid">
+      <div class="howto-col">
+        <div class="howto-h c-gold">Prefix commands - a 2-step motion</div>
+        <div class="howto-steps">
+          <span><span class="num">1</span> press <kbd>Ctrl</kbd>+<kbd>a</kbd> together</span>
+          <span><span class="num">2</span> <b>let go of both</b> (release Ctrl)</span>
+          <span><span class="num">3</span> tap the next key <b>by itself</b></span>
+        </div>
+        <div class="howto-note">Splitting, new window, zoom, detach. If you keep Ctrl held and hit <kbd>-</kbd>, you get <kbd>Ctrl</kbd>+<kbd>-</kbd> = WezTerm font zoom-out, not a split.</div>
+      </div>
+      <div class="howto-col">
+        <div class="howto-h c-pine">Move between panes - the exception</div>
+        <div class="howto-steps">
+          <span><span class="num c-pine-bg">!</span> <b>no prefix.</b> Just hold <kbd>Ctrl</kbd> and tap <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd></span>
+        </div>
+        <div class="howto-note">These are a normal held shortcut, the opposite of prefix commands. Don't press Ctrl+a first.</div>
+      </div>
+    </div>
+  </div>
 
   <div class="card span-2">
     <h2><span class="dot b-iris"></span>The mental model</h2>
