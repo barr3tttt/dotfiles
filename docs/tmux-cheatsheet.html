@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>tmux + WezTerm + Neovim Cheatsheet</title>
+<style>
+  :root {
+    --base:#232136; --surface:#2a273f; --overlay:#393552; --highlight:#44415a;
+    --muted:#6e6a86; --subtle:#908caa; --text:#e0def4;
+    --love:#eb6f92; --gold:#f6c177; --rose:#ea9a97;
+    --pine:#3e8fb0; --foam:#9ccfd8; --iris:#c4a7e7;
+  }
+  * { box-sizing: border-box; min-width: 0; }
+  html,body { margin:0; padding:0; }
+  body {
+    background: var(--base); color: var(--text);
+    font-family: 'JetBrains Mono','JetBrainsMono Nerd Font',ui-monospace,Menlo,Consolas,monospace;
+    line-height: 1.55; padding: 32px 20px 64px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header { margin-bottom: 28px; }
+  h1 { font-size: 1.5rem; margin: 0 0 6px; color: var(--text); font-weight: 700; }
+  .sub { color: var(--subtle); font-size: .85rem; }
+  .sub b { color: var(--iris); font-weight: 700; }
+  .legend {
+    margin-top: 14px; padding: 10px 14px; background: var(--surface);
+    border-left: 3px solid var(--iris); border-radius: 6px; font-size: .82rem; color: var(--subtle);
+  }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 16px; margin-top: 18px;
+  }
+  .card {
+    background: var(--surface); border: 1px solid var(--overlay);
+    border-radius: 10px; padding: 16px 18px; overflow: hidden;
+  }
+  .card h2 {
+    font-size: .95rem; margin: 0 0 12px; display: flex; align-items: center; gap: 8px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--overlay);
+  }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
+  .c-foam { color: var(--foam); } .b-foam { background: var(--foam); }
+  .c-iris { color: var(--iris); } .b-iris { background: var(--iris); }
+  .c-gold { color: var(--gold); } .b-gold { background: var(--gold); }
+  .c-rose { color: var(--rose); } .b-rose { background: var(--rose); }
+  .c-pine { color: var(--pine); } .b-pine { background: var(--pine); }
+  .c-love { color: var(--love); } .b-love { background: var(--love); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { display: flex; gap: 10px; align-items: baseline; padding: 4px 0; font-size: .85rem; }
+  li .keys { flex: 0 0 auto; white-space: nowrap; }
+  li .desc { color: var(--subtle); }
+  kbd {
+    display: inline-block; background: var(--highlight); color: var(--text);
+    border: 1px solid var(--overlay); border-bottom-width: 2px; border-radius: 5px;
+    padding: 1px 6px; font-size: .78rem; font-family: inherit; line-height: 1.4;
+  }
+  kbd.pfx { background: var(--overlay); color: var(--gold); }
+  .plus { color: var(--muted); font-size: .72rem; padding: 0 1px; }
+  .note { font-size: .78rem; color: var(--muted); margin-top: 10px; font-style: italic; }
+  .steps { counter-reset: step; }
+  .steps li { align-items: flex-start; }
+  .steps li::before {
+    counter-increment: step; content: counter(step);
+    background: var(--iris); color: var(--base); font-weight: 700;
+    width: 20px; height: 20px; border-radius: 50%; flex: 0 0 auto;
+    display: inline-flex; align-items: center; justify-content: center; font-size: .72rem; margin-top: 2px;
+  }
+  .span-2 { grid-column: 1 / -1; }
+  .model { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: .82rem; }
+  .chip { background: var(--highlight); border-radius: 6px; padding: 4px 10px; }
+  .arrow { color: var(--muted); }
+  code.inl { background: var(--highlight); padding: 1px 5px; border-radius: 4px; color: var(--foam); font-size: .8rem; }
+  footer { margin-top: 28px; text-align: center; color: var(--muted); font-size: .76rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Terminal Cheatsheet <span style="color:var(--muted);font-weight:400">- tmux / WezTerm / Neovim</span></h1>
+    <div class="sub">tmux prefix is <b>Ctrl+a</b>: tap it, release, then the command key. "<b>prefix c</b>" = Ctrl+a, then c.</div>
+    <div class="legend">
+      <b style="color:var(--gold)">Yellow keys</b> = the prefix (Ctrl+a). &nbsp; The big idea: a <b style="color:var(--foam)">session</b> holds <b style="color:var(--foam)">windows</b> (tabs), a window holds <b style="color:var(--foam)">panes</b> (splits). Detach and your work keeps running on a background server.
+    </div>
+  </header>
+
+  <div class="card span-2">
+    <h2><span class="dot b-iris"></span>The mental model</h2>
+    <div class="model">
+      <span class="chip"><span class="c-iris">Session</span> = a whole workspace (survives, reattachable)</span>
+      <span class="arrow">contains &rarr;</span>
+      <span class="chip"><span class="c-foam">Window</span> = a tab (one full screen)</span>
+      <span class="arrow">contains &rarr;</span>
+      <span class="chip"><span class="c-gold">Pane</span> = a split inside a window</span>
+    </div>
+    <div class="note">tmux runs inside WezTerm and owns all splitting. WezTerm just gives you the window, tabs, and font controls.</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2><span class="dot b-foam"></span>Sessions (the superpower)</h2>
+      <ul>
+        <li><span class="keys"><code class="inl">tmux</code></span><span class="desc">start tmux</span></li>
+        <li><span class="keys"><code class="inl">tmux new -s work</code></span><span class="desc">start a named session</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><span class="plus">then</span><kbd>d</kbd></span><span class="desc">detach (work keeps running)</span></li>
+        <li><span class="keys"><code class="inl">tmux attach</code></span><span class="desc">reattach to it</span></li>
+        <li><span class="keys"><code class="inl">tmux ls</code></span><span class="desc">list sessions</span></li>
+      </ul>
+      <div class="note">Detach, close the terminal, ssh back later, attach - everything is exactly as you left it.</div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-foam"></span>Windows (tabs)</h2>
+      <ul>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>c</kbd></span><span class="desc">new window</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>n</kbd> / <kbd>p</kbd></span><span class="desc">next / previous</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>0</kbd>..<kbd>9</kbd></span><span class="desc">jump to window N</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>,</kbd></span><span class="desc">rename window</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>&amp;</kbd></span><span class="desc">close window</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-gold"></span>Panes (splits)</h2>
+      <ul>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>|</kbd></span><span class="desc">split left / right</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>-</kbd></span><span class="desc">split top / bottom</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>z</kbd></span><span class="desc">zoom pane fullscreen (toggle)</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>H</kbd><kbd>J</kbd><kbd>K</kbd><kbd>L</kbd></span><span class="desc">resize (hold Shift, repeat)</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>x</kbd></span><span class="desc">close pane</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-pine"></span>Move between panes (no prefix!)</h2>
+      <ul>
+        <li><span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></span><span class="desc">move left / down / up / right</span></li>
+      </ul>
+      <div class="note">vim-tmux-navigator: the same keys move across Neovim splits AND tmux panes seamlessly. No prefix, no thinking about which is which.</div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-rose"></span>Copy / scroll mode</h2>
+      <ul>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>[</kbd></span><span class="desc">enter scroll mode</span></li>
+        <li><span class="keys"><kbd>v</kbd></span><span class="desc">start selecting (vi-style)</span></li>
+        <li><span class="keys"><kbd>y</kbd></span><span class="desc">yank to clipboard + exit</span></li>
+        <li><span class="keys"><kbd>q</kbd></span><span class="desc">quit scroll mode</span></li>
+      </ul>
+      <div class="note">Mouse is on too: scroll, click panes, drag borders.</div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-love"></span>Gotchas + housekeeping</h2>
+      <ul>
+        <li><span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>a</kbd><kbd>Ctrl</kbd><span class="plus">+</span><kbd>a</kbd></span><span class="desc">send a real Ctrl+a to the shell</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>Ctrl</kbd><span class="plus">+</span><kbd>l</kbd></span><span class="desc">clear screen (bare Ctrl+l now navigates)</span></li>
+        <li><span class="keys"><kbd class="pfx">prefix</kbd><kbd>r</kbd></span><span class="desc">reload tmux config</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-iris"></span>WezTerm (the outer window)</h2>
+      <ul>
+        <li><span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>Shift</kbd><span class="plus">+</span><kbd>t</kbd> / <kbd>w</kbd></span><span class="desc">new / close tab</span></li>
+        <li><span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>=</kbd> / <kbd>-</kbd> / <kbd>0</kbd></span><span class="desc">font bigger / smaller / reset</span></li>
+      </ul>
+      <div class="note">Splitting is tmux's job, so WezTerm has no split keys. Save wezterm.lua and it hot-reloads live.</div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot b-pine"></span>Neovim (leader = Space)</h2>
+      <ul>
+        <li><span class="keys"><kbd>Space</kbd><kbd>f</kbd></span><span class="desc">fuzzy find files (project root)</span></li>
+        <li><span class="keys"><kbd>Space</kbd><kbd>s</kbd></span><span class="desc">grep across the project</span></li>
+        <li><span class="keys"><kbd>Ctrl</kbd><span class="plus">+</span><kbd>h</kbd><kbd>j</kbd><kbd>k</kbd><kbd>l</kbd></span><span class="desc">move across splits + tmux panes</span></li>
+        <li><span class="keys"><kbd>Space</kbd></span><span class="desc">open which-key menu (everything else)</span></li>
+      </ul>
+    </div>
+
+    <div class="card span-2">
+      <h2><span class="dot b-gold"></span>First session - 2 minutes to muscle memory</h2>
+      <ul class="steps">
+        <li><span class="desc">Type <code class="inl">tmux</code> and press Enter. One session, one window, one pane.</span></li>
+        <li><span class="desc"><kbd class="pfx">prefix</kbd><kbd>-</kbd> then <kbd class="pfx">prefix</kbd><kbd>|</kbd> to make a few panes. Run <code class="inl">ls</code> and <code class="inl">top</code> in them.</span></li>
+        <li><span class="desc"><kbd>Ctrl</kbd>+<kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> to hop between panes. No prefix.</span></li>
+        <li><span class="desc"><kbd class="pfx">prefix</kbd><kbd>z</kbd> to fullscreen one pane, then again to bring the others back.</span></li>
+        <li><span class="desc"><kbd class="pfx">prefix</kbd><kbd>c</kbd> for a new window; <kbd class="pfx">prefix</kbd><kbd>n</kbd>/<kbd>p</kbd> to flip between windows.</span></li>
+        <li><span class="desc"><kbd class="pfx">prefix</kbd><kbd>d</kbd> to detach, then <code class="inl">tmux attach</code> - your whole workspace is back. That is the whole point of tmux.</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>Themed in Rose Pine Moon to match your terminal. Keys reflect your dotfiles config (prefix = Ctrl+a, vim-tmux-navigator).</footer>
+</div>
+</body>
+</html>
