@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Fuzzy project switcher for tmux. Pick a directory and jump to (or create) a
+# tmux session rooted there. Bound to `prefix f` in tmux.conf. Works whether or
+# not tmux is already running.
+#
+# Search roots: edit SEARCH_ROOTS to taste. Each root is scanned one level deep,
+# plus the roots themselves are offered.
+
+set -euo pipefail
+
+# Where your projects live. Edit this list to taste - each root is offered itself
+# plus its immediate subdirectories. Hidden dirs are skipped, and this never
+# scans the vault root, so the off-limits Vault/Personal folder is never listed.
+SEARCH_ROOTS=(
+    "$HOME/dotfiles"
+    "$HOME/Documents/Vault/Pi"
+)
+
+# Keep only roots that actually exist, so find never errors out.
+roots=()
+for r in "${SEARCH_ROOTS[@]}"; do
+    [[ -d "$r" ]] && roots+=("$r")
+done
+
+if [[ $# -eq 1 ]]; then
+    selected="$1"
+else
+    selected="$(
+        {
+            printf '%s\n' "${roots[@]}"
+            find "${roots[@]}" -mindepth 1 -maxdepth 1 -type d -not -name '.*' 2>/dev/null || true
+        } | sort -u | fzf --reverse --prompt='project> '
+    )" || true
+fi
+
+[[ -z "${selected:-}" ]] && exit 0
+
+# tmux session names cannot contain . or :
+selected_name="$(basename "$selected" | tr '. :' '___')"
+
+# Not inside tmux and no server running -> start fresh, attached.
+if [[ -z "${TMUX:-}" ]] && ! tmux list-sessions >/dev/null 2>&1; then
+    exec tmux new-session -s "$selected_name" -c "$selected"
+fi
+
+# Create the session detached if it doesn't exist yet.
+if ! tmux has-session -t="$selected_name" 2>/dev/null; then
+    tmux new-session -ds "$selected_name" -c "$selected"
+fi
+
+# Attach or switch depending on whether we're already inside tmux.
+if [[ -z "${TMUX:-}" ]]; then
+    exec tmux attach-session -t "$selected_name"
+else
+    exec tmux switch-client -t "$selected_name"
+fi
