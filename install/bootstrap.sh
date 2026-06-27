@@ -49,6 +49,16 @@ echo "== 7. Skills (e2e-testing) =="
 mkdir -p "$HOME/.claude/skills"
 ln -sfn "$DF/skills/e2e-testing" "$HOME/.claude/skills/e2e-testing"
 
+echo "== 8. tmux plugins (tpm + resurrect + continuum) and sessionizer =="
+TPM_DIR="$HOME/.config/tmux/plugins/tpm"
+[ -d "$TPM_DIR" ] || git clone --depth 1 https://github.com/tmux-plugins/tpm "$TPM_DIR"
+ln -sf "$DF/scripts/tmux-sessionizer" "$HOME/.local/bin/tmux-sessionizer"
+# Install plugins non-interactively if a tmux server is up; otherwise tpm picks
+# them up on first launch (prefix + I installs manually).
+tmux source-file "$HOME/.config/tmux/tmux.conf" 2>/dev/null && \
+  "$TPM_DIR/bin/install_plugins" 2>/dev/null || \
+  echo "  (start tmux then press prefix+I to install plugins)"
+
 echo
 echo "Done. For voice injection, also run install/ydotool-setup.sh and re-login,"
 echo "then bind 'voice-dictate' to a KDE global shortcut."
