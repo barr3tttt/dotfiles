@@ -40,6 +40,11 @@ then the key. `Ctrl+A Ctrl+A` sends a literal `Ctrl+A` through to the app.
 | `prefix Shift+H/J/K/L` | Resize pane (repeatable, hold and tap) |
 | `prefix Ctrl+L` | Clear screen (since bare Ctrl+L now navigates) |
 | `prefix N` / `P` | Next / previous window (repeatable) |
+| `prefix Z` | Zoom pane fullscreen (toggle) |
+| `prefix X` | Close pane |
+| `prefix D` | Detach (work keeps running; `tmux attach` to return) |
+| `prefix F` | Fuzzy project switcher (popup; jump to a repo as a session) |
+| `prefix G` | Switch between existing sessions (fzf popup) |
 
 Copy mode (vi-style):
 
@@ -49,6 +54,12 @@ Copy mode (vi-style):
 | `Y` | Copy selection and exit copy mode |
 
 The default tmux split keys (`"` and `%`) are unbound in favor of `|` and `-`.
+
+Plugins (via tpm, auto-installed by bootstrap): **tmux-resurrect** + **tmux-continuum**
+give reboot persistence - sessions auto-save every 15 min and auto-restore when the
+tmux server starts. `prefix Ctrl+S` saves manually, `prefix Ctrl+R` restores. The
+`prefix F` switcher is `scripts/tmux-sessionizer` (edit its `SEARCH_ROOTS` to point at
+where you keep projects).
 
 ## Neovim
 
