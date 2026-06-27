@@ -50,4 +50,16 @@ The default tmux split keys (`"` and `%`) are unbound in favor of `|` and `-`.
 
 ## Neovim
 
-Neovim has its own large keymap set under `nvim-overrides/`; it is not duplicated here.
+Built on LazyVim, so the leader key is `Space` and the bulk of the keymap is
+LazyVim's defaults (see https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua).
+Only the overrides in `nvim-overrides/lua/config/keymaps.lua` are listed here.
+
+| Key | Action |
+| --- | --- |
+| `<leader>f` | Find files by fuzzy name, from project root |
+| `<leader>s` | Project-wide text search / live grep, from root |
+
+Both bind the bare leader key directly (a single keystroke after `Space`),
+intentionally shadowing LazyVim's `<leader>f..` / `<leader>s..` which-key groups so
+the two most common actions are fastest. They dispatch through `LazyVim.pick`, so
+they use the configured picker (Telescope) and respect the project root.
