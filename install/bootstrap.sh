@@ -43,6 +43,7 @@ mkdir -p "$HOME/.config/voice" && ln -sf "$DF/config/voice/vocab.txt" "$HOME/.co
 echo "== 6. Neovim overrides (LazyVim assumed installed) =="
 cp "$DF/nvim-overrides/lua/config/keymaps.lua"  "$HOME/.config/nvim/lua/config/keymaps.lua"
 cp "$DF/nvim-overrides/lua/plugins/rose-pine.lua" "$HOME/.config/nvim/lua/plugins/rose-pine.lua"
+cp "$DF/nvim-overrides/lua/plugins/vim-tmux-navigator.lua" "$HOME/.config/nvim/lua/plugins/vim-tmux-navigator.lua"
 
 echo "== 7. Skills (e2e-testing) =="
 mkdir -p "$HOME/.claude/skills"

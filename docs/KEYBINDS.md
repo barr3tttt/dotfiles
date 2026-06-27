@@ -1,8 +1,10 @@
 # Keybinds (WezTerm + tmux)
 
 The terminal stack is two layers: WezTerm is the outer window, tmux runs inside it
-and owns multiplexing. The split keys are deliberately mirrored (`|` and `-` behave
-the same in both layers) so the muscle memory carries whether or not you are in tmux.
+and owns multiplexing. All splitting and pane navigation happens in tmux; WezTerm
+deliberately has no split keys so the two layers never nest confusingly. Pane
+navigation is unified across tmux and Neovim via vim-tmux-navigator: `Ctrl+h/j/k/l`
+moves between nvim splits and tmux panes with no prefix.
 
 Sources: `wezterm/.config/wezterm/wezterm.lua`, `tmux/.config/tmux/tmux.conf`.
 
@@ -15,14 +17,12 @@ WezTerm's built-in default.
 | --- | --- |
 | `Ctrl+Shift+T` | New tab |
 | `Ctrl+Shift+W` | Close tab (confirm) |
-| `Ctrl+Shift+\|` | Split pane right (side-by-side) |
-| `Ctrl+Shift+-` | Split pane below (stacked) |
 | `Ctrl+=` | Increase font size |
 | `Ctrl+-` | Decrease font size |
 | `Ctrl+0` | Reset font size |
 
-Note: WezTerm's `SplitVertical` puts the new pane below; `SplitHorizontal` puts it to
-the right. The bindings above hide that naming behind the `|` / `-` glyphs.
+WezTerm has no split keys on purpose: splitting is tmux's job, so panes never nest
+across the two layers.
 
 ## tmux
 
@@ -35,8 +35,10 @@ then the key. `Ctrl+A Ctrl+A` sends a literal `Ctrl+A` through to the app.
 | `prefix \|` | Split window right (keeps current path) |
 | `prefix -` | Split window below (keeps current path) |
 | `prefix C` | New window (keeps current path) |
-| `prefix H` / `J` / `K` / `L` | Move to pane left / down / up / right |
+| `Ctrl+H` / `J` / `K` / `L` | Move between panes / nvim splits (no prefix, seamless) |
+| `prefix H` / `J` / `K` / `L` | Move to pane left / down / up / right (prefix fallback) |
 | `prefix Shift+H/J/K/L` | Resize pane (repeatable, hold and tap) |
+| `prefix Ctrl+L` | Clear screen (since bare Ctrl+L now navigates) |
 | `prefix N` / `P` | Next / previous window (repeatable) |
 
 Copy mode (vi-style):
@@ -58,6 +60,7 @@ Only the overrides in `nvim-overrides/lua/config/keymaps.lua` are listed here.
 | --- | --- |
 | `<leader>f` | Find files by fuzzy name, from project root |
 | `<leader>s` | Project-wide text search / live grep, from root |
+| `Ctrl+H` / `J` / `K` / `L` | Move between nvim splits and tmux panes (vim-tmux-navigator) |
 
 Both bind the bare leader key directly (a single keystroke after `Space`),
 intentionally shadowing LazyVim's `<leader>f..` / `<leader>s..` which-key groups so
