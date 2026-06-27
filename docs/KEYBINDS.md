@@ -45,6 +45,7 @@ then the key. `Ctrl+A Ctrl+A` sends a literal `Ctrl+A` through to the app.
 | `prefix D` | Detach (work keeps running; `tmux attach` to return) |
 | `prefix F` | Fuzzy project switcher (popup; jump to a repo as a session) |
 | `prefix G` | Switch between existing sessions (fzf popup) |
+| `F12` | Toggle passthrough for nested tmux (see below); no prefix |
 
 Copy mode (vi-style):
 
@@ -60,6 +61,15 @@ give reboot persistence - sessions auto-save every 15 min and auto-restore when 
 tmux server starts. `prefix Ctrl+S` saves manually, `prefix Ctrl+R` restores. The
 `prefix F` switcher is `scripts/tmux-sessionizer` (edit its `SEARCH_ROOTS` to point at
 where you keep projects).
+
+### Nested tmux (Pi over ssh)
+
+The Pi (`ssh pi`) also runs tmux with the same `Ctrl+a` prefix, so ssh-ing in from inside
+the laptop's tmux gives you tmux-inside-tmux. Press **`F12`** to hand the keyboard to the
+inner (Pi) session: the outer tmux drops its prefix and the status bar turns red. Press
+`F12` again to take local control back. The Pi's status bar is green and labeled `PI:` so
+the two layers are easy to tell apart. The Pi config lives at `~/.tmux.conf` on the Pi
+(not in this repo).
 
 ## Neovim
 
