@@ -90,7 +90,7 @@ alias ls="eza --group-directories-first"
 alias ll="eza -lh --group-directories-first --git"
 alias la="eza -lha --group-directories-first --git"
 alias lt="eza --tree --level=2 --group-directories-first"
-# bat (modern cat) — Catppuccin Mocha theme, behaves like cat
+# bat (modern cat) — Dracula theme, behaves like cat
 alias cat="bat --style=plain --paging=never"
 export BAT_THEME="Dracula"
 alias ..="cd .."
@@ -186,10 +186,10 @@ export PATH="$HOME/.local/bin:$PATH"
 [[ -f "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/amazon-q/shell/zshrc.post.zsh"
 
 # Added by Antigravity
-export PATH="/Users/user/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # bun completions
-[ -s "/Users/user/.bun/_bun" ] && source "/Users/user/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -199,7 +199,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 bindkey '\t' autosuggest-accept
 
 # opencode
-export PATH=/Users/user/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
 
 # Machine/work-specific overrides (gitignored; holds AWS profiles, work paths, etc.)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local

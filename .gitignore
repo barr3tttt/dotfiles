@@ -61,3 +61,7 @@ __pycache__/
 # --- Local-only overrides ---
 *.local
 local.*
+
+# --- macOS wezterm wallpapers (large binaries): keep dir, ignore images ---
+mac/.config/wezterm/backdrops/*
+!mac/.config/wezterm/backdrops/.gitkeep
