@@ -1,0 +1,87 @@
+# ~/.config/starship.toml
+# Dracula (official palette) — matches ~/.config/wezterm/colors/custom.lua.
+# Same hex values used the same way as the terminal = one designed system.
+
+format = """
+$directory\
+$git_branch\
+$git_status\
+$nodejs\
+$python\
+$rust\
+$golang\
+$docker_context\
+$cmd_duration\
+$character"""
+
+palette = "dracula"
+
+[palettes.dracula]
+background  = "#282a36"
+foreground  = "#f8f8f2"
+selection   = "#44475a"
+comment     = "#6272a4"
+cyan        = "#8be9fd"
+green       = "#50fa7b"
+orange      = "#ffb86c"
+pink        = "#ff79c6"
+purple      = "#bd93f9"
+red         = "#ff5555"
+yellow      = "#f1fa8c"
+
+# Color language mirrors WezTerm:
+#   purple  = primary accent (active tab, left status)
+#   pink    = current/branch
+#   cyan    = tooling/prompt char + accent/separator
+#   yellow  = attention/secondary (battery, git status)
+#   comment = dim meta
+
+[directory]
+style = "bold purple"
+format = "[$path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = ""
+style = "pink"
+format = '[$symbol $branch ]($style)'
+
+[git_status]
+style = "yellow"
+format = '([$all_status$ahead_behind]($style) )'
+
+[nodejs]
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[python]
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[rust]
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[golang]
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[docker_context]
+symbol = ""
+style = "cyan"
+format = '[$symbol $context ]($style)'
+
+[cmd_duration]
+min_time = 500
+style = "comment"
+format = '[ $duration ]($style)'
+
+[character]
+success_symbol = "[❯](bold cyan)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold purple)"
