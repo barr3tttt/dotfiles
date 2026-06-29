@@ -1,0 +1,2 @@
+# Wallpaper images intentionally not tracked (large binaries).
+# Drop your own .jpg/.png here; appearance.lua starts with no_img=true anyway.
