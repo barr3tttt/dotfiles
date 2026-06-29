@@ -1,0 +1,15 @@
+# ~/.zshrc.local.example — template for machine/work-specific overrides.
+#
+# On a fresh machine:  cp ~/.zshrc.local.example ~/.zshrc.local  then edit.
+# ~/.zshrc.local is gitignored (*.local) and is sourced at the end of ~/.zshrc.
+# Keep anything private or work-specific HERE, never in the tracked .zshrc.
+
+# --- AWS profile shortcuts (fill in your real profile names) ---
+# alias aws-prod='export AWS_PROFILE=YOUR_PROFILE_HERE'
+# alias aws-dev='export AWS_PROFILE=YOUR_PROFILE_HERE'
+
+# --- Machine-local helper scripts ---
+# [ -f "$HOME/path/to/helper.zsh" ] && source "$HOME/path/to/helper.zsh"
+
+# --- Any other host-specific env / aliases ---
+# export SOME_TOKEN="YOUR_TOKEN_HERE"   # prefer a secrets manager over plaintext

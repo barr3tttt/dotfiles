@@ -32,10 +32,13 @@ stow wezterm tmux agents scripts voice      # Linux "Ship"
 
 ### macOS host
 ```bash
-# work/machine-specific bits (AWS profiles, work paths) live in ~/.zshrc.local
-# (gitignored). Create that file before/after stowing if needed.
 cd ~/dotfiles
 stow -t ~ mac        # symlinks ~/.zshrc, ~/.tmux.conf, ~/.config/{starship.toml,wezterm}
+
+# work/machine-specific bits (AWS profiles, work paths) go in ~/.zshrc.local
+# (gitignored, sourced by ~/.zshrc). Start from the tracked template:
+cp ~/.zshrc.local.example ~/.zshrc.local && $EDITOR ~/.zshrc.local
+
 # tmux plugins: TPM auto-clones on first launch; press prefix+I to install.
 # wezterm wallpapers are not tracked — drop images in ~/.config/wezterm/backdrops/
 ```
