@@ -76,9 +76,13 @@ export PATH="/opt/homebrew/bin:$HOME/.local/bin:$PATH"
 
 # ────────────────────────────────────────────────
 # 🔗 AUTO-ATTACH TMUX (persistent sessions, WezTerm only)
-#    Skips VS Code, Claude Code, scripts, and nested tmux.
+#    Skips: nested tmux ($TMUX), Claude Code / agent shells ($CLAUDECODE),
+#    non-WezTerm terminals, and tiny embedded ptys (< 10 rows) that would
+#    otherwise squish the session down to ~1 row and corrupt its redraw.
 # ────────────────────────────────────────────────
-if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]] && command -v tmux &>/dev/null; then
+if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -z "$CLAUDECODE" ]] \
+   && [[ "$TERM_PROGRAM" == "WezTerm" ]] && command -v tmux &>/dev/null \
+   && [[ "$(tput lines 2>/dev/null || echo 0)" -ge 10 ]]; then
   tmux attach -t main 2>/dev/null || tmux new -s main
 fi
 
