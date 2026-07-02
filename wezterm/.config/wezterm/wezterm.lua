@@ -43,11 +43,35 @@ config.automatically_reload_config = true
 config.check_for_updates = false
 config.audible_bell = 'Disabled'
 
+-- ---------------------------------------------------------------- frosted glass
+-- Translucent window so the desktop shows through. The "frosted" blur is applied
+-- by the compositor, not WezTerm: macOS gets it natively below; on Linux/KWin the
+-- window must be blurred by the Force Blur effect (kwin-effects-forceblur), since
+-- stock KWin blur ignores apps that don't request it (WezTerm doesn't).
+-- Lower OPACITY = more see-through. tmux pane bodies use the default background,
+-- which inherits this translucency; the rose-pine status bar stays solid on top.
+local OPACITY = 0.85
+config.window_background_opacity = OPACITY
+config.macos_window_background_blur = 20  -- macOS only; ignored elsewhere
+
+-- Ctrl+Shift+B: toggle between translucent and fully opaque for the focused window.
+wezterm.on('opacity-toggle', function(window)
+  local overrides = window:get_config_overrides() or {}
+  if overrides.window_background_opacity then
+    overrides.window_background_opacity = nil
+  else
+    overrides.window_background_opacity = 1.0
+  end
+  window:set_config_overrides(overrides)
+end)
+
 -- ---------------------------------------------------------------- keys
 -- Multiplexing is delegated to tmux; keep WezTerm bindings light.
 config.keys = {
   { key = 't', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
   { key = 'w', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
+  -- translucency
+  { key = 'b', mods = 'CTRL|SHIFT', action = wezterm.action.EmitEvent 'opacity-toggle' },
   -- font size
   { key = '=', mods = 'CTRL', action = wezterm.action.IncreaseFontSize },
   { key = '-', mods = 'CTRL', action = wezterm.action.DecreaseFontSize },
