@@ -26,3 +26,8 @@ Keep this file short. It is loaded into every system prompt; every line costs to
 ## Safety
 - Never install unverified third-party agent skills. They can exfiltrate credentials and
   degrade output. Only use vetted, named tools.
+- When creating a skill or agent artifact, decide its home before writing: anything that
+  names or documents personal/private content, machines, hosts, or secrets goes in a
+  PRIVATE repo (default: the vault at ~/Documents/Vault, symlinked into ~/.claude/skills).
+  Only generic, non-personal tooling may go in a public repo (e.g. dotfiles). Never commit
+  personal content or secrets to a public repo.
