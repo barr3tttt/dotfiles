@@ -95,7 +95,8 @@ function BackDrops:_gen_no_img_opts()
          width = '120%',
          vertical_offset = '-10%',
          horizontal_offset = '-10%',
-         opacity = 0.88,
+         -- focus-mode tint: lower = more frosted see-through (multiplies window_background_opacity)
+         opacity = 0.72,
       },
    }
 end

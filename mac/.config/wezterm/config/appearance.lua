@@ -26,8 +26,13 @@ return {
    background = backdrops:initial_options({ no_img = true }),
 
    -- translucent frosted-glass window (no image)
-   window_background_opacity = 0.85,
-   macos_window_background_blur = 30,
+   -- window_background_opacity is the MASTER transparency knob (blur needs it < 1.0);
+   -- the focus-mode tint layer in utils/backdrops.lua (_gen_no_img_opts) multiplies on top.
+   window_background_opacity = 0.78,
+   macos_window_background_blur = 40,
+   -- keep ToggleFullScreen (F11) non-native so frosted glass survives fullscreen
+   -- (native macOS fullscreen = own Space with a black backing = no blur-through)
+   native_macos_fullscreen_mode = false,
 
    -- scrollbar
    enable_scroll_bar = true,
