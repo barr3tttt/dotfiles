@@ -101,6 +101,8 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias grep="grep --color=auto"
 alias update="brew update && brew upgrade && brew cleanup"
+alias oc="opencode"
+alias cdx="codex"
 
 # Projects & shortcuts
 alias nvimconfig="nvim ~/.config/nvim"
