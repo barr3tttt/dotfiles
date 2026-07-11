@@ -48,6 +48,8 @@ cp "$DF/nvim-overrides/lua/plugins/vim-tmux-navigator.lua" "$HOME/.config/nvim/l
 echo "== 7. Skills (e2e-testing) =="
 mkdir -p "$HOME/.claude/skills"
 ln -sfn "$DF/skills/e2e-testing" "$HOME/.claude/skills/e2e-testing"
+# Claude Code status line (see claude/README.md for the settings.json snippet)
+ln -sf "$DF/claude/statusline.mjs" "$HOME/.claude/statusline.mjs"
 
 echo "== 8. tmux plugins (tpm + resurrect + continuum) and sessionizer =="
 TPM_DIR="$HOME/.config/tmux/plugins/tpm"

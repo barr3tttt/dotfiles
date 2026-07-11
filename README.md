@@ -13,6 +13,7 @@ tmux/      -> ~/.config/tmux/           tmux: detach server, minimal status bar
 agents/    -> ~/.config/agents/         AGENTS.md (agent-agnostic memory, ~27 lines)
 scripts/   -> ~/.local/bin/             helper scripts + shims
 voice/     -> ~/.local/bin/             Whisper push-to-talk dictation
+claude/    -> ~/.claude/statusline.mjs  Claude Code status line (see claude/README.md)
 nvim-overrides/                          tracked copies of LazyVim customizations
 install/                                 setup scripts (per phase)
 mac/       -> ~ (macOS host)             macOS: WezTerm (Dracula) + tmux + zsh + starship
