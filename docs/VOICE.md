@@ -32,6 +32,17 @@ Press once to start recording, press again to stop, transcribe, and type the tex
 - If ydotoold is not running, the text is copied to the clipboard (paste with Ctrl+V)
   and you get a notification, so dictation degrades gracefully.
 
+## Troubleshooting
+- Nothing types and the transcript is gibberish like "you you you": whisper
+  hallucinates that on silent audio - the mic is muted or wrong. Check
+  `wpctl status` (Sources section) and unmute with
+  `wpctl set-mute @DEFAULT_AUDIO_SOURCE@ 0` (a laptop mic-mute key or Easy
+  Effects can mute it silently).
+- Remember it is a toggle: press once to start, again to stop. If you only
+  press once, it records forever and never types. Stale state lives in
+  `$XDG_RUNTIME_DIR/voice-dictate/` (delete `rec.pid` to reset).
+- Injection test: `ydotool type -- "hi"` (needs `/run/ydotoold.socket`).
+
 ## Verified
 - whisper-cli transcription (bundled jfk.wav) accurate.
 - Record -> wav -> whisper pipeline works with `pw-record`.
