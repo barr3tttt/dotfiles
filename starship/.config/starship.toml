@@ -1,0 +1,102 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Pure-style two-line prompt, Rose Pine Moon palette (matches wezterm/tmux/nvim).
+# Context line: dir, git, then extras that only appear when relevant
+# (lang versions, k8s context, slow-command duration, non-zero exit).
+# Input line: bare ❯ - rose normally, love-red after a failure.
+
+add_newline = true
+
+format = """
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$python\
+$nodejs\
+$rust\
+$golang\
+$kubernetes\
+$cmd_duration\
+$status
+$character"""
+
+[palettes.rose-pine-moon]
+love = '#eb6f92'
+gold = '#f6c177'
+rose = '#ea9a97'
+pine = '#3e8fb0'
+foam = '#9ccfd8'
+iris = '#c4a7e7'
+subtle = '#908caa'
+muted = '#6e6a86'
+
+palette = 'rose-pine-moon'
+
+[directory]
+style = 'iris'
+truncation_length = 3
+truncate_to_repo = false
+
+[git_branch]
+format = '[$branch]($style) '
+style = 'subtle'
+
+[git_state]
+format = '[$state( $progress_current/$progress_total)]($style) '
+style = 'gold'
+
+[git_status]
+format = '[$all_status$ahead_behind]($style) '
+style = 'love'
+modified = '*'
+untracked = '?'
+staged = '+'
+deleted = '✘'
+renamed = '»'
+stashed = '≡'
+conflicted = '='
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+
+[python]
+format = '[py${version}]($style) '
+version_format = '${major}.${minor}'
+style = 'foam'
+
+[nodejs]
+format = '[node${version}]($style) '
+version_format = '${major}'
+style = 'foam'
+
+[rust]
+format = '[rs${version}]($style) '
+version_format = '${major}.${minor}'
+style = 'foam'
+
+[golang]
+format = '[go${version}]($style) '
+version_format = '${major}.${minor}'
+style = 'foam'
+
+[kubernetes]
+disabled = false
+format = '[⎈ $context(/$namespace)]($style) '
+style = 'pine'
+detect_env_vars = ['KUBECONFIG']
+
+[cmd_duration]
+min_time = 2000
+format = '[$duration]($style) '
+style = 'gold'
+
+[status]
+disabled = false
+format = '[✗ $status]($style) '
+style = 'love'
+
+[character]
+success_symbol = '[❯](bold rose)'
+error_symbol = '[❯](bold love)'
+vimcmd_symbol = '[❮](bold foam)'

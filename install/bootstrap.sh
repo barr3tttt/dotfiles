@@ -5,7 +5,8 @@ set -euo pipefail
 DF="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "== 1. System packages (sudo) =="
-sudo dnf install -y stow ydotool xclip git gh nodejs cmake make gcc wl-clipboard
+sudo dnf install -y stow ydotool xclip git gh nodejs cmake make gcc wl-clipboard \
+  eza btop zoxide fzf trash-cli fastfetch jq
 sudo dnf copr enable -y wezfurlong/wezterm-nightly && sudo dnf install -y wezterm
 
 echo "== 2. User-space tools =="
@@ -13,6 +14,7 @@ command -v gitleaks >/dev/null || {
   TAG=$(curl -fsSL https://api.github.com/repos/gitleaks/gitleaks/releases/latest | grep -oP '"tag_name": "\K[^"]+')
   curl -fsSL "https://github.com/gitleaks/gitleaks/releases/download/${TAG}/gitleaks_${TAG#v}_linux_x64.tar.gz" | tar -xz -C "$HOME/.local/bin" gitleaks
 }
+command -v starship >/dev/null || curl -sS https://starship.rs/install.sh | sh -s -- -y -b "$HOME/.local/bin"
 npm install -g gh-axi chrome-devtools-axi lavish-axi gnhf
 gh-axi setup hooks; chrome-devtools-axi setup hooks; lavish-axi setup hooks
 npx -y skills@latest add kunchenguid/axi -g -y || true
@@ -29,7 +31,7 @@ ln -sf "$WC/build/bin/whisper-cli" "$HOME/.local/bin/whisper-cli"
 
 echo "== 4. Stow config packages =="
 cd "$DF"
-stow -v -t "$HOME" wezterm tmux scripts voice
+stow -v -t "$HOME" wezterm tmux bash starship scripts voice
 
 echo "== 5. Agent memory + misc symlinks =="
 ln -sf "$DF/agents/AGENTS.md" "$HOME/.claude/CLAUDE.md"
@@ -50,6 +52,7 @@ mkdir -p "$HOME/.claude/skills"
 ln -sfn "$DF/skills/e2e-testing" "$HOME/.claude/skills/e2e-testing"
 # Claude Code status line (see claude/README.md for the settings.json snippet)
 ln -sf "$DF/claude/statusline.mjs" "$HOME/.claude/statusline.mjs"
+ln -sf "$DF/claude/settings.json" "$HOME/.claude/settings.json"
 
 echo "== 8. tmux plugins (tpm + resurrect + continuum) and sessionizer =="
 TPM_DIR="$HOME/.config/tmux/plugins/tpm"

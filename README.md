@@ -10,11 +10,12 @@ Claude Code. Managed with GNU Stow.
 ```
 wezterm/   -> ~/.config/wezterm/        WezTerm config (rose-pine-moon, hot-reload)
 tmux/      -> ~/.config/tmux/           tmux: detach server, minimal status bar
-bash/      -> ~/.bashrc.d/              shell env: nvim as EDITOR everywhere
+bash/      -> ~/.bashrc.d/              shell aliases, tool init, nvim as EDITOR
+starship/  -> ~/.config/starship.toml   prompt: Pure-style two-liner, rose-pine-moon
 agents/    -> ~/.config/agents/         AGENTS.md (agent-agnostic memory, ~27 lines)
 scripts/   -> ~/.local/bin/             helper scripts + shims
 voice/     -> ~/.local/bin/             Whisper push-to-talk dictation
-claude/    -> ~/.claude/statusline.mjs  Claude Code status line (see claude/README.md)
+claude/    -> ~/.claude/                Claude Code settings.json + status line
 nvim-overrides/                          tracked copies of LazyVim customizations
 install/                                 setup scripts (per phase)
 mac/       -> ~ (macOS host)             macOS: WezTerm (Dracula) + tmux + zsh + starship
@@ -29,7 +30,7 @@ separate stow packages — neither overwrites the other.
 git clone https://github.com/barr3tttt/dotfiles ~/dotfiles
 cd ~/dotfiles
 bash install/bootstrap.sh        # installs tools (see script for sudo steps)
-stow wezterm tmux bash agents scripts voice      # Linux "Ship"
+stow wezterm tmux bash starship agents scripts voice      # Linux "Ship"
 ```
 
 ### macOS host
