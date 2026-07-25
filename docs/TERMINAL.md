@@ -1,6 +1,6 @@
 # Terminal tools guide (the Ship)
 
-Everything interactive is themed rose-pine-moon: WezTerm > tmux > bash (ble.sh) >
+Everything interactive is themed Dracula (matching the mac host): WezTerm > tmux > bash (ble.sh) >
 starship, plus bat / delta / fzf / eza / btop. This is the "how do I actually use
 it" reference. tmux keys have their own doc: `docs/KEYBINDS.md` and the
 interactive `docs/tmux-cheatsheet.html`.
@@ -9,21 +9,21 @@ interactive `docs/tmux-cheatsheet.html`.
 
 Two lines. Line 1 is context, line 2 is where you type.
 
-- `~/dotfiles` (iris) - current dir, truncated to 3 segments
-- `master` (grey) - git branch; only in repos
-- git status (red, terse): `*` modified `?` untracked `+` staged `✘` deleted
+- `~/dotfiles` (purple) - current dir, truncated to 3 segments
+- `master` (pink) - git branch; only in repos
+- git status (yellow, terse): `*` modified `?` untracked `+` staged `✘` deleted
   `»` renamed `≡` stashed `=` conflicted `⇡2` ahead `⇣1` behind
-- `py3.12` / `node22` (foam) - language versions, only when relevant files present
-- `3s` (gold) - last command duration, only if it took over 2s
+- `py3.14` / `node22` (cyan) - language versions, only when relevant files present
+- `3s` (comment grey) - last command duration, only if it took over 0.5s
 - `✗ 1` (red) - last exit code, only when non-zero
-- `❯` rose = ready; red = previous command failed
+- `❯` cyan = ready; red = previous command failed
 
 ## Typing (ble.sh)
 
 The command line colors itself as you type:
 
-- foam = valid command - red = command not found / syntax error (before Enter!)
-- gold = quoted string - iris = options, variables, globs - grey = comments
+- cyan = valid command - red = command not found / syntax error (before Enter!)
+- yellow = quoted string - purple = options, variables, globs - grey = comments
 - Grey ghost text after the cursor = autosuggestion from history.
   Accept it with Right arrow (or Ctrl+F at end of line). Keep typing to ignore.
 - Tab opens a completion menu with descriptions; keep hitting Tab to cycle.
@@ -48,20 +48,20 @@ The command line colors itself as you type:
 
 ## Viewing files (bat)
 
-`cat file` is bat: syntax-highlighted, rose-pine, no pager (drop-in cat).
+`cat file` is bat: syntax-highlighted, Dracula, no pager (drop-in cat).
 `bat file` adds line numbers, grid, and paging. Raw original: `\cat`.
 
 ## Git diffs (delta)
 
 `git diff` / `git show` / `git log -p` page through delta: syntax-highlighted,
-line numbers, rose-pine. Inside: `n` / `N` jump between files, `q` quits.
+line numbers, Dracula. Inside: `n` / `N` jump between files, `q` quits.
 Side-by-side once: `git -c delta.side-by-side=true diff`.
 
 ## Quality of life
 
 - `extract <archive>` - unpacks tar/zip/7z/rar/anything.
 - `tldr <cmd>` - example-first help (`tldr tar`), instant, offline cache.
-- `man` pages are colored (headings foam, options iris).
+- `man` pages are colored (headings cyan, options purple).
 - `update` - `sudo dnf upgrade --refresh`.
 - Git shorthand: `gs` status - `gl` graph log - `ga` add . - `gc` commit -
   `gco` checkout - `gp` push.
@@ -79,5 +79,6 @@ Side-by-side once: `git -c delta.side-by-side=true diff`.
 
 - Reproduce this stack on a fresh machine: `install/terminal-color.sh`.
 - Stow packages involved: `bash starship blesh bat git btop wezterm tmux`.
-- Themes are tracked in-repo (bat tmTheme, btop theme, .blerc faces); fzf/less
-  colors live in `bash/.bashrc.d/tools.sh`.
+- Active theme: Dracula built-ins (bat/btop/vivid) + .blerc faces; fzf/less
+  colors live in `bash/.bashrc.d/tools.sh`. The rose-pine theme files remain
+  in-repo for easy switch-back.

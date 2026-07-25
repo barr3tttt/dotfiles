@@ -1,104 +1,103 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
-# Pure-style two-line prompt, Rose Pine Moon palette (matches wezterm/tmux/nvim).
-# Context line: dir, git, then extras that only appear when relevant
-# (lang versions, k8s context, slow-command duration, non-zero exit).
-# Input line: bare ❯ - rose normally, love-red after a failure.
+# Dracula (official palette) - matches the mac host and wezterm/tmux/ble.sh.
+# Same layout as mac/.config/starship.toml plus the Ship's kubernetes and
+# exit-status modules. Root-level keys stay ABOVE the first [section] header
+# (see AGENTS.md lesson 2026-07-24).
 
-add_newline = true
-
-# Root-level key: must stay above the first [section] header or TOML folds it
-# into that table and the palette silently never activates.
-palette = 'rose-pine-moon'
+palette = "dracula"
 
 format = """
 $directory\
 $git_branch\
-$git_state\
 $git_status\
-$python\
 $nodejs\
+$python\
 $rust\
 $golang\
+$docker_context\
 $kubernetes\
 $cmd_duration\
-$status
+$status\
 $character"""
 
-[palettes.rose-pine-moon]
-love = '#eb6f92'
-gold = '#f6c177'
-rose = '#ea9a97'
-pine = '#3e8fb0'
-foam = '#9ccfd8'
-iris = '#c4a7e7'
-subtle = '#908caa'
-muted = '#6e6a86'
+[palettes.dracula]
+background  = "#282a36"
+foreground  = "#f8f8f2"
+selection   = "#44475a"
+comment     = "#6272a4"
+cyan        = "#8be9fd"
+green       = "#50fa7b"
+orange      = "#ffb86c"
+pink        = "#ff79c6"
+purple      = "#bd93f9"
+red         = "#ff5555"
+yellow      = "#f1fa8c"
+
+# Color language mirrors WezTerm/tmux:
+#   purple  = primary accent (dir, active tab)
+#   pink    = current/branch
+#   cyan    = tooling/prompt char
+#   yellow  = attention/secondary (git status)
+#   comment = dim meta
 
 [directory]
-style = 'iris'
+style = "bold purple"
+format = "[$path ]($style)"
 truncation_length = 3
-truncate_to_repo = false
+truncation_symbol = "…/"
 
 [git_branch]
-format = '[$branch]($style) '
-style = 'subtle'
-
-[git_state]
-format = '[$state( $progress_current/$progress_total)]($style) '
-style = 'gold'
+symbol = ""
+style = "pink"
+format = '[$symbol $branch ]($style)'
 
 [git_status]
-format = '[$all_status$ahead_behind]($style) '
-style = 'love'
-modified = '*'
-untracked = '?'
-staged = '+'
-deleted = '✘'
-renamed = '»'
-stashed = '≡'
-conflicted = '='
-ahead = '⇡${count}'
-behind = '⇣${count}'
-diverged = '⇕⇡${ahead_count}⇣${behind_count}'
-
-[python]
-format = '[py${version}]($style) '
-version_format = '${major}.${minor}'
-style = 'foam'
+style = "yellow"
+format = '([$all_status$ahead_behind]($style) )'
 
 [nodejs]
-format = '[node${version}]($style) '
-version_format = '${major}'
-style = 'foam'
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[python]
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
 
 [rust]
-format = '[rs${version}]($style) '
-version_format = '${major}.${minor}'
-style = 'foam'
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
 
 [golang]
-format = '[go${version}]($style) '
-version_format = '${major}.${minor}'
-style = 'foam'
+symbol = ""
+style = "cyan"
+format = '[$symbol $version ]($style)'
+
+[docker_context]
+symbol = ""
+style = "cyan"
+format = '[$symbol $context ]($style)'
 
 [kubernetes]
 disabled = false
-format = '[⎈ $context(/$namespace)]($style) '
-style = 'pine'
+format = '[⎈ $context(/$namespace) ]($style)'
+style = "cyan"
 detect_env_vars = ['KUBECONFIG']
 
 [cmd_duration]
-min_time = 2000
-format = '[$duration]($style) '
-style = 'gold'
+min_time = 500
+style = "comment"
+format = '[ $duration ]($style)'
 
 [status]
 disabled = false
-format = '[✗ $status]($style) '
-style = 'love'
+format = '[✗ $status ]($style)'
+style = "red"
 
 [character]
-success_symbol = '[❯](bold rose)'
-error_symbol = '[❯](bold love)'
-vimcmd_symbol = '[❮](bold foam)'
+success_symbol = "[❯](bold cyan)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold purple)"

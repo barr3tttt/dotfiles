@@ -1,9 +1,10 @@
 # ~/.blerc - ble.sh configuration (tracked in dotfiles, stow package: blesh)
-# Rose Pine Moon faces, mirroring the mac's zsh-syntax-highlighting color map:
-#   foam = commands/tooling   gold = strings   iris = options/expansions
-#   rose = operators/redirects  love = errors  muted = comments/ghost text
-# Palette: base #232136 text #e0def4 love #eb6f92 gold #f6c177 rose #ea9a97
-#          pine #3e8fb0 foam #9ccfd8 iris #c4a7e7 subtle #908caa muted #6e6a86
+# Dracula faces, mirroring the mac's zsh-syntax-highlighting color map:
+#   cyan = commands/tooling   yellow = strings   purple = options/globs/vars
+#   pink = operators/redirects  red = errors  comment = comments/ghost text
+# Palette: bg #282a36 fg #f8f8f2 selection #44475a comment #6272a4
+#          cyan #8be9fd green #50fa7b pink #ff79c6 purple #bd93f9
+#          red #ff5555 yellow #f1fa8c orange #ffb86c
 
 # --- behavior -------------------------------------------------------------
 bleopt complete_auto_delay=150        # ghost suggestions after 150ms idle
@@ -12,51 +13,51 @@ bleopt exec_elapsed_mark=             # starship shows duration; don't double-re
 bleopt exec_exit_mark=                # starship shows exit status; don't double-report
 
 # --- commands (mac zsh: cyan) --------------------------------------------
-ble-face command_builtin='fg=#9ccfd8'
-ble-face command_alias='fg=#9ccfd8'
-ble-face command_function='fg=#9ccfd8'
-ble-face command_file='fg=#9ccfd8'
-ble-face command_keyword='fg=#3e8fb0'
-ble-face command_jobs='fg=#9ccfd8,bold'
-ble-face command_directory='fg=#c4a7e7,italic'   # autocd-able directory names
+ble-face command_builtin='fg=#8be9fd'
+ble-face command_alias='fg=#8be9fd'
+ble-face command_function='fg=#8be9fd'
+ble-face command_file='fg=#8be9fd'
+ble-face command_keyword='fg=#ff79c6'
+ble-face command_jobs='fg=#8be9fd,bold'
+ble-face command_directory='fg=#bd93f9,italic'   # autocd-able directory names
 
 # --- syntax ---------------------------------------------------------------
-ble-face syntax_default='fg=#e0def4'
-ble-face syntax_error='fg=#eb6f92,bold'
-ble-face syntax_quoted='fg=#f6c177'
-ble-face syntax_quotation='fg=#f6c177,bold'
-ble-face syntax_escape='fg=#ea9a97'
-ble-face syntax_expr='fg=#c4a7e7'
-ble-face syntax_varname='fg=#c4a7e7'
-ble-face syntax_param_expansion='fg=#c4a7e7'
-ble-face syntax_history_expansion='fg=#c4a7e7,italic'
-ble-face syntax_function_name='fg=#9ccfd8,bold'
-ble-face syntax_comment='fg=#6e6a86'
-ble-face syntax_glob='fg=#c4a7e7,bold'
-ble-face syntax_brace='fg=#ea9a97'
-ble-face syntax_tilde='fg=#c4a7e7'
-ble-face syntax_delimiter='fg=#ea9a97'
-ble-face syntax_document='fg=#f6c177'
-ble-face syntax_document_begin='fg=#f6c177,bold'
+ble-face syntax_default='fg=#f8f8f2'
+ble-face syntax_error='fg=#ff5555,bold'
+ble-face syntax_quoted='fg=#f1fa8c'
+ble-face syntax_quotation='fg=#f1fa8c,bold'
+ble-face syntax_escape='fg=#ff79c6'
+ble-face syntax_expr='fg=#bd93f9'
+ble-face syntax_varname='fg=#bd93f9'
+ble-face syntax_param_expansion='fg=#bd93f9'
+ble-face syntax_history_expansion='fg=#bd93f9,italic'
+ble-face syntax_function_name='fg=#8be9fd,bold'
+ble-face syntax_comment='fg=#6272a4'
+ble-face syntax_glob='fg=#bd93f9,bold'
+ble-face syntax_brace='fg=#ff79c6'
+ble-face syntax_tilde='fg=#bd93f9'
+ble-face syntax_delimiter='fg=#ff79c6'
+ble-face syntax_document='fg=#f1fa8c'
+ble-face syntax_document_begin='fg=#f1fa8c,bold'
 
 # --- arguments / filenames ------------------------------------------------
-ble-face argument_option='fg=#c4a7e7'
-ble-face argument_error='fg=#eb6f92,underline'
-ble-face filename_directory='fg=#9ccfd8'
-ble-face filename_directory_sticky='fg=#232136,bg=#9ccfd8'
-ble-face filename_executable='fg=#9ccfd8,bold'
-ble-face filename_link='fg=#3e8fb0,underline'
-ble-face filename_orphan='fg=#eb6f92,underline'
+ble-face argument_option='fg=#bd93f9'
+ble-face argument_error='fg=#ff5555,underline'
+ble-face filename_directory='fg=#8be9fd'
+ble-face filename_directory_sticky='fg=#282a36,bg=#8be9fd'
+ble-face filename_executable='fg=#50fa7b,bold'
+ble-face filename_link='fg=#8be9fd,underline'
+ble-face filename_orphan='fg=#ff5555,underline'
 
 # --- editor chrome --------------------------------------------------------
-ble-face auto_complete='fg=#6e6a86'              # ghost-text suggestion
-ble-face region='bg=#393552'                     # selection
-ble-face region_match='fg=#232136,bg=#f6c177'    # search match
-ble-face region_target='fg=#232136,bg=#c4a7e7'
-ble-face disabled='fg=#6e6a86'
-ble-face overwrite_mode='fg=#232136,bg=#ea9a97'
-ble-face vbell='fg=#232136,bg=#f6c177'
-ble-face vbell_erase='bg=#232136'
+ble-face auto_complete='fg=#6272a4'              # ghost-text suggestion
+ble-face region='bg=#44475a'                     # selection
+ble-face region_match='fg=#282a36,bg=#f1fa8c'    # search match
+ble-face region_target='fg=#282a36,bg=#bd93f9'
+ble-face disabled='fg=#6272a4'
+ble-face overwrite_mode='fg=#282a36,bg=#ffb86c'
+ble-face vbell='fg=#282a36,bg=#f1fa8c'
+ble-face vbell_erase='bg=#282a36'
 
 # --- fzf integration (Fedora fzf package) ---------------------------------
 # Ctrl+R history / Ctrl+T files / Alt+C cd, rendered through ble.sh's editor.

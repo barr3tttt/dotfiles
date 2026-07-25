@@ -8,14 +8,14 @@ Claude Code. Managed with GNU Stow.
 
 ## Layout (GNU Stow packages)
 ```
-wezterm/   -> ~/.config/wezterm/        WezTerm config (rose-pine-moon, hot-reload)
+wezterm/   -> ~/.config/wezterm/        WezTerm config (Dracula, hot-reload)
 tmux/      -> ~/.config/tmux/           tmux: detach server, minimal status bar
 bash/      -> ~/.bashrc.d/              shell aliases, functions, tool init, colors
-starship/  -> ~/.config/starship.toml   prompt: Pure-style two-liner, rose-pine-moon
-blesh/     -> ~/.blerc                  ble.sh line editor: rose-pine-moon faces
-bat/       -> ~/.config/bat/            bat config + rose-pine-moon tmTheme
+starship/  -> ~/.config/starship.toml   prompt: mac-matching single-liner, Dracula
+blesh/     -> ~/.blerc                  ble.sh line editor: Dracula faces
+bat/       -> ~/.config/bat/            bat config (Dracula; rose-pine tmTheme kept)
 git/       -> ~/.config/git/            delta pager gitconfig include
-btop/      -> ~/.config/btop/themes/    rose-pine-moon btop theme
+btop/      -> ~/.config/btop/themes/    btop themes (dracula built-in active)
 agents/    -> ~/.config/agents/         AGENTS.md (agent-agnostic memory, ~27 lines)
 scripts/   -> ~/.local/bin/             helper scripts + shims
 voice/     -> ~/.local/bin/             Whisper push-to-talk dictation
@@ -25,7 +25,7 @@ install/                                 setup scripts (per phase)
 mac/       -> ~ (macOS host)             macOS: WezTerm (Dracula) + tmux + zsh + starship
 ```
 
-The Linux Ship is themed rose-pine-moon; the macOS host is themed Dracula and
+Both machines are themed Dracula. The macOS host
 runs tmux-as-multiplexer inside a chrome-less WezTerm. They are intentionally
 separate stow packages — neither overwrites the other.
 

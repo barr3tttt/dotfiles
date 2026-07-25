@@ -8,16 +8,16 @@
 [delta]
 	navigate = true    # n / N jump between files in a diff
 	line-numbers = true
-	syntax-theme = rose-pine-moon    # shares the bat theme in ~/.config/bat/themes
-	file-style = "#c4a7e7" bold
-	file-decoration-style = "#393552" ul
-	hunk-header-style = "#908caa" line-number
-	hunk-header-decoration-style = "#393552" box
+	syntax-theme = Dracula    # bat's built-in Dracula (matches the mac)
+	file-style = "#bd93f9" bold
+	file-decoration-style = "#44475a" ul
+	hunk-header-style = "#6272a4" line-number
+	hunk-header-decoration-style = "#44475a" box
 	minus-style = syntax "#3d2b3d"
-	plus-style = syntax "#2b3540"
-	line-numbers-minus-style = "#eb6f92"
-	line-numbers-plus-style = "#9ccfd8"
-	line-numbers-zero-style = "#6e6a86"
+	plus-style = syntax "#2b3d33"
+	line-numbers-minus-style = "#ff5555"
+	line-numbers-plus-style = "#50fa7b"
+	line-numbers-zero-style = "#6272a4"
 [merge]
 	conflictstyle = zdiff3
 [diff]

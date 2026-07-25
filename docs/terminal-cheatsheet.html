@@ -6,10 +6,10 @@
 <title>Ship terminal cheatsheet</title>
 <style>
   :root {
-    --base:#232136; --surface:#2a273f; --overlay:#393552; --hl:#2a283e;
-    --muted:#6e6a86; --subtle:#908caa; --text:#e0def4;
-    --love:#eb6f92; --gold:#f6c177; --rose:#ea9a97;
-    --pine:#3e8fb0; --foam:#9ccfd8; --iris:#c4a7e7;
+    --base:#282a36; --surface:#313442; --overlay:#44475a; --hl:#21222c;
+    --muted:#6272a4; --subtle:#c8c9e0; --text:#f8f8f2;
+    --love:#ff5555; --gold:#f1fa8c; --rose:#ff79c6;
+    --pine:#ffb86c; --foam:#8be9fd; --iris:#bd93f9;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { background:var(--base); color:var(--text); font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif; padding:2rem 1rem 4rem; }
@@ -37,30 +37,30 @@
 <body>
 <div class="wrap">
   <h1>Ship terminal cheatsheet</h1>
-  <p class="sub">WezTerm &gt; tmux &gt; bash + ble.sh &gt; starship, all rose-pine-moon. tmux keys live in the <a href="tmux-cheatsheet.html">tmux cheatsheet</a>.</p>
+  <p class="sub">WezTerm &gt; tmux &gt; bash + ble.sh &gt; starship, all Dracula. tmux keys live in the <a href="tmux-cheatsheet.html">tmux cheatsheet</a>.</p>
 
   <div class="grid">
 
     <div class="card">
       <h2>The prompt <span class="who">starship</span></h2>
-      <div class="prompt"><span style="color:#c4a7e7">~/dotfiles</span> <span style="color:#908caa">master</span> <span style="color:#eb6f92">*?⇡1</span> <span style="color:#9ccfd8">node22</span> <span style="color:#f6c177">3s</span>
-<span style="color:#ea9a97">❯</span></div>
+      <div class="prompt"><span style="color:#bd93f9">~/dotfiles</span> <span style="color:#ff79c6">master</span> <span style="color:#f1fa8c">*?⇡1</span> <span style="color:#8be9fd">node22</span> <span style="color:#6272a4">3s</span>
+<span style="color:#8be9fd">❯</span></div>
       <div class="legend">
-        <span><span class="swatch" style="background:#c4a7e7"></span>dir</span>
-        <span><span class="swatch" style="background:#908caa"></span>branch</span>
-        <span><span class="swatch" style="background:#eb6f92"></span>git: <code>*</code>mod <code>?</code>new <code>+</code>staged <code>⇡⇣</code>ahead/behind</span>
-        <span><span class="swatch" style="background:#f6c177"></span>duration &gt;2s</span>
+        <span><span class="swatch" style="background:#bd93f9"></span>dir</span>
+        <span><span class="swatch" style="background:#ff79c6"></span>branch</span>
+        <span><span class="swatch" style="background:#f1fa8c"></span>git: <code>*</code>mod <code>?</code>new <code>+</code>staged <code>⇡⇣</code>ahead/behind</span>
+        <span><span class="swatch" style="background:#6272a4"></span>duration &gt;0.5s</span>
       </div>
-      <div class="row"><span class="d"><code>❯</code> rose = ready &middot; red = last command failed (with <code>✗ code</code> above)</span></div>
+      <div class="row"><span class="d"><code>❯</code> cyan = ready &middot; red = last command failed (with <code>✗ code</code> above)</span></div>
     </div>
 
     <div class="card">
       <h2>Typing <span class="who">ble.sh</span></h2>
       <div class="legend">
-        <span><span class="swatch" style="background:#9ccfd8"></span>valid command</span>
-        <span><span class="swatch" style="background:#eb6f92"></span>typo (pre-Enter!)</span>
-        <span><span class="swatch" style="background:#f6c177"></span>string</span>
-        <span><span class="swatch" style="background:#c4a7e7"></span>option/var/glob</span>
+        <span><span class="swatch" style="background:#8be9fd"></span>valid command</span>
+        <span><span class="swatch" style="background:#ff5555"></span>typo (pre-Enter!)</span>
+        <span><span class="swatch" style="background:#f1fa8c"></span>string</span>
+        <span><span class="swatch" style="background:#bd93f9"></span>option/var/glob</span>
       </div>
       <div class="row"><kbd>&rarr;</kbd><span class="d">accept grey ghost-text suggestion (from history)</span></div>
       <div class="row"><kbd>Tab</kbd><span class="d">completion menu with descriptions; Tab again to cycle</span></div>
@@ -111,9 +111,9 @@
       <h2>Help &amp; QoL</h2>
       <div class="row"><span class="cmd">tldr tar</span><span class="d">example-first help for any command</span></div>
       <div class="row"><span class="cmd">extract x.tgz</span><span class="d">unpack any archive format</span></div>
-      <div class="row"><span class="cmd">man x</span><span class="d">now colored (headings foam, options iris)</span></div>
+      <div class="row"><span class="cmd">man x</span><span class="d">now colored (headings cyan, options purple)</span></div>
       <div class="row"><span class="cmd">update</span><span class="d">dnf upgrade --refresh</span></div>
-      <div class="row"><span class="cmd">top</span><span class="d">btop, rose-pine themed</span></div>
+      <div class="row"><span class="cmd">top</span><span class="d">btop, Dracula themed</span></div>
     </div>
 
     <div class="card">

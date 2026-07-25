@@ -8,11 +8,11 @@ tool). Public repo: no personal content, hosts, or secrets belong here.
 
 ## Repository map
 - `bash/` - .bashrc.d fragments (aliases.sh, functions.sh, tools.sh, editor.sh)
-- `starship/` - starship prompt config (rose-pine moon, Pure-style)
+- `starship/` - starship prompt config (Dracula, mac-matching)
 - `blesh/`, `bat/`, `git/`, `btop/` - ble.sh faces, bat theme, delta include, btop theme
 - `install/terminal-color.sh` - reproduces the whole color stack on a fresh machine
-- `tmux/` - tmux.conf (rose-pine moon status bar) + tpm plugins
-- `wezterm/` - wezterm.lua (rose-pine moon color scheme)
+- `tmux/` - tmux.conf (Dracula status bar) + tpm plugins
+- `wezterm/` - wezterm.lua (Dracula, mac palette)
 - `nvim-overrides/` - LazyVim overrides
 - `agents/`, `skills/`, `claude/`, `config/` - agent tooling and shared config
 - `install/`, `scripts/`, `mac/`, `pi/` - setup scripts and per-machine bits
@@ -20,7 +20,7 @@ tool). Public repo: no personal content, hosts, or secrets belong here.
 
 ## Terminology
 - "AXI" - agent-ergonomic CLI wrappers (gh-axi, lavish-axi, chrome-devtools-axi)
-- Theme baseline: rose-pine moon across wezterm, tmux, starship, nvim, Konsole
+- Theme baseline: Dracula on both machines (Ship re-themed 2026-07-25 to match mac); rose-pine assets kept in-repo for switch-back
 
 ## Runtime conventions
 - Deploy: `stow <package>` from repo root (configs in ~ are symlinks into here)

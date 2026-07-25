@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Terminal color stack (rose-pine-moon): ble.sh, bat, fzf, vivid LS_COLORS,
+# Terminal color stack (dracula): ble.sh, bat, fzf, vivid LS_COLORS,
 # delta, btop theme, tealdeer. Idempotent; safe to re-run. Fedora-specific.
 # Configs are stowed from the repo; this script installs the binaries and
 # runs the one-time wiring steps.
@@ -50,10 +50,10 @@ fi
 
 echo "==> btop theme"
 if [ -f "$HOME/.config/btop/btop.conf" ]; then
-  sed -i 's/^color_theme = .*/color_theme = "rose-pine-moon"/' "$HOME/.config/btop/btop.conf"
+  sed -i 's/^color_theme = .*/color_theme = "dracula"/' "$HOME/.config/btop/btop.conf"
 else
   mkdir -p "$HOME/.config/btop"
-  echo 'color_theme = "rose-pine-moon"' > "$HOME/.config/btop/btop.conf"
+  echo 'color_theme = "dracula"' > "$HOME/.config/btop/btop.conf"
 fi
 
 echo "==> tealdeer cache"

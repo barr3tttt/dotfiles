@@ -1,6 +1,6 @@
 -- WezTerm configuration ("The Ship")
 -- Keyboard-centric terminal. Cross-platform with conditional Lua logic and
--- instant hot-reload on save. Theme: rose-pine moon. tmux runs inside this.
+-- instant hot-reload on save. Theme: Dracula (matches the mac host). tmux inside.
 
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
@@ -16,8 +16,30 @@ config.font = wezterm.font_with_fallback {
 config.font_size = is_linux() and 12.0 or 13.0
 config.line_height = 1.05
 
--- ---------------------------------------------------------------- theme (rose-pine moon)
-config.color_scheme = 'rose-pine-moon'
+-- ---------------------------------------------------------------- theme (Dracula)
+-- Exact copy of the mac host's palette (mac/.config/wezterm/colors/custom.lua).
+config.colors = {
+  foreground = '#f8f8f2',
+  background = '#282a36',
+  cursor_bg = '#f8f8f2',
+  cursor_border = '#f8f8f2',
+  cursor_fg = '#282a36',
+  selection_bg = '#44475a',
+  selection_fg = '#f8f8f2',
+  ansi = {
+    '#21222c', '#ff5555', '#50fa7b', '#f1fa8c',
+    '#bd93f9', '#ff79c6', '#8be9fd', '#f8f8f2',
+  },
+  brights = {
+    '#6272a4', '#ff6e6e', '#69ff94', '#ffffa5',
+    '#d6acff', '#ff92df', '#a4ffff', '#ffffff',
+  },
+  visual_bell = '#ff5555',
+  indexed = { [16] = '#ffb86c', [17] = '#ff79c6' },
+  scrollbar_thumb = '#44475a',
+  split = '#6272a4',
+  compose_cursor = '#ff79c6',
+}
 
 -- ---------------------------------------------------------------- window
 config.window_background_opacity = 1.0
@@ -51,9 +73,9 @@ config.visual_bell = {
   fade_out_duration_ms = 250,
   target = 'CursorColor',
 }
--- command palette (Ctrl+Shift+P) in rose-pine moon
-config.command_palette_bg_color = '#2a273f'
-config.command_palette_fg_color = '#e0def4'
+-- command palette (Ctrl+Shift+P) in Dracula (mac values)
+config.command_palette_bg_color = '#191a21'
+config.command_palette_fg_color = '#bd93f9'
 config.command_palette_font_size = 12
 config.command_palette_rows = 20
 
@@ -69,7 +91,7 @@ config.audible_bell = 'Disabled'
 -- window must be blurred by the Force Blur effect (kwin-effects-forceblur), since
 -- stock KWin blur ignores apps that don't request it (WezTerm doesn't).
 -- Lower OPACITY = more see-through. tmux pane bodies use the default background,
--- which inherits this translucency; the rose-pine status bar stays solid on top.
+-- which inherits this translucency; the Dracula status bar stays solid on top.
 local OPACITY = 0.78
 config.window_background_opacity = OPACITY
 config.macos_window_background_blur = 20  -- macOS only; ignored elsewhere
