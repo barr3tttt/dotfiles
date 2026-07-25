@@ -7,7 +7,7 @@ interactive `docs/tmux-cheatsheet.html`.
 
 ## Reading the prompt (starship)
 
-Two lines. Line 1 is context, line 2 is where you type.
+One line, mac-style: context modules then the prompt char, left to right.
 
 - `~/dotfiles` (purple) - current dir, truncated to 3 segments
 - `master` (pink) - git branch; only in repos
