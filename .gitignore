@@ -34,6 +34,7 @@ authorized_keys
 known_hosts
 
 # --- Agent / tool state that may carry tokens or PII ---
+.lavish/
 .claude/.credentials.json
 .gemini/oauth_creds.json
 .gnhf/

@@ -10,8 +10,12 @@ Claude Code. Managed with GNU Stow.
 ```
 wezterm/   -> ~/.config/wezterm/        WezTerm config (rose-pine-moon, hot-reload)
 tmux/      -> ~/.config/tmux/           tmux: detach server, minimal status bar
-bash/      -> ~/.bashrc.d/              shell aliases, tool init, nvim as EDITOR
+bash/      -> ~/.bashrc.d/              shell aliases, functions, tool init, colors
 starship/  -> ~/.config/starship.toml   prompt: Pure-style two-liner, rose-pine-moon
+blesh/     -> ~/.blerc                  ble.sh line editor: rose-pine-moon faces
+bat/       -> ~/.config/bat/            bat config + rose-pine-moon tmTheme
+git/       -> ~/.config/git/            delta pager gitconfig include
+btop/      -> ~/.config/btop/themes/    rose-pine-moon btop theme
 agents/    -> ~/.config/agents/         AGENTS.md (agent-agnostic memory, ~27 lines)
 scripts/   -> ~/.local/bin/             helper scripts + shims
 voice/     -> ~/.local/bin/             Whisper push-to-talk dictation
@@ -30,7 +34,8 @@ separate stow packages — neither overwrites the other.
 git clone https://github.com/barr3tttt/dotfiles ~/dotfiles
 cd ~/dotfiles
 bash install/bootstrap.sh        # installs tools (see script for sudo steps)
-stow wezterm tmux bash starship agents scripts voice      # Linux "Ship"
+bash install/terminal-color.sh   # color stack: ble.sh, delta, vivid, themes
+stow wezterm tmux bash starship agents scripts voice blesh bat git btop  # Linux "Ship"
 ```
 
 ### macOS host

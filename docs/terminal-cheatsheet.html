@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ship terminal cheatsheet</title>
+<style>
+  :root {
+    --base:#232136; --surface:#2a273f; --overlay:#393552; --hl:#2a283e;
+    --muted:#6e6a86; --subtle:#908caa; --text:#e0def4;
+    --love:#eb6f92; --gold:#f6c177; --rose:#ea9a97;
+    --pine:#3e8fb0; --foam:#9ccfd8; --iris:#c4a7e7;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--base); color:var(--text); font:15px/1.55 -apple-system,"Segoe UI",Roboto,sans-serif; padding:2rem 1rem 4rem; }
+  .wrap { max-width:1100px; margin:0 auto; min-width:0; }
+  h1 { color:var(--iris); font-size:1.5rem; }
+  .sub { color:var(--subtle); margin:.3rem 0 1.6rem; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr)); gap:1rem; }
+  .card { background:var(--surface); border:1px solid var(--overlay); border-radius:12px; padding:1rem 1.1rem; min-width:0; }
+  .card h2 { font-size:1rem; color:var(--foam); margin-bottom:.6rem; }
+  .card h2 .who { color:var(--muted); font-weight:400; font-size:.78rem; margin-left:.4rem; }
+  .row { display:flex; gap:.7rem; align-items:baseline; margin:.35rem 0; min-width:0; }
+  .row .k { flex:0 0 auto; }
+  .row .d { color:var(--subtle); font-size:.88rem; min-width:0; }
+  kbd, .cmd { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; background:var(--hl); border:1px solid var(--overlay); border-bottom-width:2px; border-radius:5px; padding:.1em .45em; color:var(--gold); white-space:nowrap; }
+  .cmd { color:var(--foam); }
+  .d code { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.82em; color:var(--rose); }
+  .legend { display:flex; flex-wrap:wrap; gap:.4rem .9rem; margin:.3rem 0; }
+  .legend span { font-size:.85rem; color:var(--subtle); }
+  .swatch { display:inline-block; width:.7em; height:.7em; border-radius:3px; margin-right:.35em; }
+  .prompt { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.85rem; background:var(--hl); border:1px solid var(--overlay); border-radius:8px; padding:.7rem .9rem; margin:.5rem 0; overflow-x:auto; white-space:pre; }
+  .note { color:var(--muted); font-size:.8rem; margin-top:.5rem; }
+  a { color:var(--foam); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Ship terminal cheatsheet</h1>
+  <p class="sub">WezTerm &gt; tmux &gt; bash + ble.sh &gt; starship, all rose-pine-moon. tmux keys live in the <a href="tmux-cheatsheet.html">tmux cheatsheet</a>.</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>The prompt <span class="who">starship</span></h2>
+      <div class="prompt"><span style="color:#c4a7e7">~/dotfiles</span> <span style="color:#908caa">master</span> <span style="color:#eb6f92">*?⇡1</span> <span style="color:#9ccfd8">node22</span> <span style="color:#f6c177">3s</span>
+<span style="color:#ea9a97">❯</span></div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#c4a7e7"></span>dir</span>
+        <span><span class="swatch" style="background:#908caa"></span>branch</span>
+        <span><span class="swatch" style="background:#eb6f92"></span>git: <code>*</code>mod <code>?</code>new <code>+</code>staged <code>⇡⇣</code>ahead/behind</span>
+        <span><span class="swatch" style="background:#f6c177"></span>duration &gt;2s</span>
+      </div>
+      <div class="row"><span class="d"><code>❯</code> rose = ready &middot; red = last command failed (with <code>✗ code</code> above)</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Typing <span class="who">ble.sh</span></h2>
+      <div class="legend">
+        <span><span class="swatch" style="background:#9ccfd8"></span>valid command</span>
+        <span><span class="swatch" style="background:#eb6f92"></span>typo (pre-Enter!)</span>
+        <span><span class="swatch" style="background:#f6c177"></span>string</span>
+        <span><span class="swatch" style="background:#c4a7e7"></span>option/var/glob</span>
+      </div>
+      <div class="row"><kbd>&rarr;</kbd><span class="d">accept grey ghost-text suggestion (from history)</span></div>
+      <div class="row"><kbd>Tab</kbd><span class="d">completion menu with descriptions; Tab again to cycle</span></div>
+      <div class="row"><kbd>Ctrl+_</kbd><span class="d">undo edit</span></div>
+      <p class="note">Kill switch: comment the two ble.sh lines in ~/.bashrc (top &amp; bottom).</p>
+    </div>
+
+    <div class="card">
+      <h2>Fuzzy find <span class="who">fzf</span></h2>
+      <div class="row"><kbd>Ctrl+R</kbd><span class="d">fuzzy shell history &mdash; type fragment, Enter runs</span></div>
+      <div class="row"><kbd>Ctrl+T</kbd><span class="d">pick file(s), path lands at cursor</span></div>
+      <div class="row"><kbd>Alt+C</kbd><span class="d">pick a directory, cd into it</span></div>
+      <div class="row"><span class="d">Inside: type to filter &middot; arrows &middot; Enter accepts &middot; Esc cancels</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Jump dirs <span class="who">zoxide</span></h2>
+      <div class="row"><span class="cmd">z dot</span><span class="d">jump to best match (~/dotfiles) &mdash; learns from every cd</span></div>
+      <div class="row"><span class="cmd">zi</span><span class="d">interactive candidate list (fzf)</span></div>
+      <div class="row"><span class="cmd">bd</span><span class="d">back to previous dir ($OLDPWD)</span></div>
+    </div>
+
+    <div class="card">
+      <h2>List files <span class="who">eza</span></h2>
+      <div class="row"><span class="cmd">ls</span><span class="d">short &middot; icons &middot; dirs first</span></div>
+      <div class="row"><span class="cmd">ll</span><span class="d">long + git column</span></div>
+      <div class="row"><span class="cmd">la</span><span class="d">long incl. hidden</span></div>
+      <div class="row"><span class="cmd">lt</span><span class="d">by modified &middot; <span class="cmd">lk</span> by size &middot; <span class="cmd">lr</span> tree</span></div>
+      <div class="row"><span class="cmd">lf</span><span class="d">files only &middot; <span class="cmd">ldir</span> dirs only</span></div>
+    </div>
+
+    <div class="card">
+      <h2>View files <span class="who">bat</span></h2>
+      <div class="row"><span class="cmd">cat f</span><span class="d">syntax-highlighted drop-in cat (no pager)</span></div>
+      <div class="row"><span class="cmd">bat f</span><span class="d">+ line numbers, grid, paging</span></div>
+      <div class="row"><span class="cmd">\cat</span><span class="d">the original /bin/cat</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Git diffs <span class="who">delta</span></h2>
+      <div class="row"><span class="cmd">git diff</span><span class="d">syntax-colored, line numbers (also show / log -p)</span></div>
+      <div class="row"><kbd>n</kbd> <kbd>N</kbd><span class="d">next / previous file inside a diff &middot; <kbd>q</kbd> quits</span></div>
+      <div class="row"><span class="cmd">git -c delta.side-by-side=true diff</span><span class="d">split view once</span></div>
+      <div class="row"><span class="d">Shortcuts: <code>gs gl ga gc gco gp</code></span></div>
+    </div>
+
+    <div class="card">
+      <h2>Help &amp; QoL</h2>
+      <div class="row"><span class="cmd">tldr tar</span><span class="d">example-first help for any command</span></div>
+      <div class="row"><span class="cmd">extract x.tgz</span><span class="d">unpack any archive format</span></div>
+      <div class="row"><span class="cmd">man x</span><span class="d">now colored (headings foam, options iris)</span></div>
+      <div class="row"><span class="cmd">update</span><span class="d">dnf upgrade --refresh</span></div>
+      <div class="row"><span class="cmd">top</span><span class="d">btop, rose-pine themed</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Window chrome <span class="who">wezterm</span></h2>
+      <div class="row"><span class="d">New windows auto-attach tmux session <code>main</code></span></div>
+      <div class="row"><kbd>Ctrl+Shift+B</kbd><span class="d">toggle frosted glass</span></div>
+      <div class="row"><kbd>Ctrl+Shift+P</kbd><span class="d">command palette</span></div>
+      <div class="row"><span class="d">Tabs/splits: all tmux &mdash; prefix <code>C-a</code>, <code>f</code> sessionizer, <code>g</code> sessions, <code>F12</code> remote passthrough</span></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

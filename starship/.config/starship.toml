@@ -7,6 +7,10 @@
 
 add_newline = true
 
+# Root-level key: must stay above the first [section] header or TOML folds it
+# into that table and the palette silently never activates.
+palette = 'rose-pine-moon'
+
 format = """
 $directory\
 $git_branch\
@@ -30,8 +34,6 @@ foam = '#9ccfd8'
 iris = '#c4a7e7'
 subtle = '#908caa'
 muted = '#6e6a86'
-
-palette = 'rose-pine-moon'
 
 [directory]
 style = 'iris'

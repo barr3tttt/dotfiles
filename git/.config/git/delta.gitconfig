@@ -1,0 +1,24 @@
+# delta git pager (tracked in dotfiles, stow package: git).
+# Wired in with: git config --global include.path '~/.config/git/delta.gitconfig'
+# (only after git-delta is installed - core.pager errors if the binary is missing).
+[core]
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true    # n / N jump between files in a diff
+	line-numbers = true
+	syntax-theme = rose-pine-moon    # shares the bat theme in ~/.config/bat/themes
+	file-style = "#c4a7e7" bold
+	file-decoration-style = "#393552" ul
+	hunk-header-style = "#908caa" line-number
+	hunk-header-decoration-style = "#393552" box
+	minus-style = syntax "#3d2b3d"
+	plus-style = syntax "#2b3540"
+	line-numbers-minus-style = "#eb6f92"
+	line-numbers-plus-style = "#9ccfd8"
+	line-numbers-zero-style = "#6e6a86"
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	colorMoved = default

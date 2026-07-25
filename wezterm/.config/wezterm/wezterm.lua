@@ -28,14 +28,34 @@ config.initial_rows = 32
 config.adjust_window_size_when_changing_font_size = false
 
 -- ---------------------------------------------------------------- tabs / cursor / scrollback
-config.use_fancy_tab_bar = true
-config.tab_bar_at_bottom = false
-config.hide_tab_bar_if_only_one_tab = true
-config.tab_max_width = 32
+-- Tab bar off (mac parity): tmux owns all multiplexing chrome.
+config.enable_tab_bar = false
 config.default_cursor_style = 'BlinkingBar'
-config.cursor_blink_rate = 500
+config.cursor_blink_rate = 650
+config.cursor_blink_ease_in = 'EaseOut'
+config.cursor_blink_ease_out = 'EaseOut'
 config.scrollback_lines = 10000
 config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+-- ---------------------------------------------------------------- rendering (mac parity)
+config.front_end = 'WebGpu'
+config.webgpu_power_preference = 'HighPerformance'
+config.max_fps = 120
+config.animation_fps = 120
+
+-- ---------------------------------------------------------------- bells / palette chrome
+config.visual_bell = {
+  fade_in_function = 'EaseIn',
+  fade_in_duration_ms = 250,
+  fade_out_function = 'EaseOut',
+  fade_out_duration_ms = 250,
+  target = 'CursorColor',
+}
+-- command palette (Ctrl+Shift+P) in rose-pine moon
+config.command_palette_bg_color = '#2a273f'
+config.command_palette_fg_color = '#e0def4'
+config.command_palette_font_size = 12
+config.command_palette_rows = 20
 
 -- ---------------------------------------------------------------- behavior
 -- Hot-reload is on by default; make it explicit. Saving this file re-applies it.
@@ -50,7 +70,7 @@ config.audible_bell = 'Disabled'
 -- stock KWin blur ignores apps that don't request it (WezTerm doesn't).
 -- Lower OPACITY = more see-through. tmux pane bodies use the default background,
 -- which inherits this translucency; the rose-pine status bar stays solid on top.
-local OPACITY = 0.85
+local OPACITY = 0.78
 config.window_background_opacity = OPACITY
 config.macos_window_background_blur = 20  -- macOS only; ignored elsewhere
 
@@ -66,10 +86,9 @@ wezterm.on('opacity-toggle', function(window)
 end)
 
 -- ---------------------------------------------------------------- keys
--- Multiplexing is delegated to tmux; keep WezTerm bindings light.
+-- Multiplexing is delegated to tmux (tab bar disabled above); WezTerm keeps
+-- only window-level bindings.
 config.keys = {
-  { key = 't', mods = 'CTRL|SHIFT', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
-  { key = 'w', mods = 'CTRL|SHIFT', action = wezterm.action.CloseCurrentTab { confirm = true } },
   -- translucency
   { key = 'b', mods = 'CTRL|SHIFT', action = wezterm.action.EmitEvent 'opacity-toggle' },
   -- font size

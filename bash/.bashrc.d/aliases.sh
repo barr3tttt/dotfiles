@@ -84,6 +84,20 @@ alias untar='tar -xvf'
 alias unbz2='tar -xvjf'
 alias ungz='tar -xvzf'
 
+# Git (mac parity)
+alias gs='git status'
+alias gc='git commit'
+alias gl='git log --oneline --graph'
+alias gco='git checkout'
+alias gp='git push'
+alias ga='git add .'
+
+# Modern cat (bat; theme comes from ~/.config/bat/config). Real cat: \cat
+alias cat='bat --style=plain --paging=never'
+
+# System update (mac parity: brew update && upgrade && cleanup)
+alias update='sudo dnf upgrade --refresh'
+
 # Misc
 alias less='less -R'
 alias cls='clear'
