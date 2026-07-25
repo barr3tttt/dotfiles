@@ -11,8 +11,8 @@ Two lines. Line 1 is context, line 2 is where you type.
 
 - `~/dotfiles` (purple) - current dir, truncated to 3 segments
 - `master` (pink) - git branch; only in repos
-- git status (yellow, terse): `*` modified `?` untracked `+` staged `✘` deleted
-  `»` renamed `≡` stashed `=` conflicted `⇡2` ahead `⇣1` behind
+- git status (yellow, terse): `!` modified `?` untracked `+` staged `✘` deleted
+  `»` renamed `$` stashed `=` conflicted `⇡2` ahead `⇣1` behind
 - `py3.14` / `node22` (cyan) - language versions, only when relevant files present
 - `3s` (comment grey) - last command duration, only if it took over 0.5s
 - `✗ 1` (red) - last exit code, only when non-zero
