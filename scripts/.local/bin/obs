@@ -1,41 +1,50 @@
 #!/usr/bin/env bash
 # Wrapper for Obsidian's built-in CLI (shipped in Obsidian 1.12.4+).
 # Saves typing the Flatpak incantation, hides the harmless D-Bus warning the
-# sandbox prints on every call, and starts the GUI first if it is not running -
-# the CLI drives the live app, so a closed Obsidian means every command fails.
+# sandbox prints on every call, and starts the GUI first if it is not running.
+#
+# The CLI talks to the live app, and with no app running it BLOCKS FOREVER
+# rather than failing - so every invocation here is wrapped in `timeout`.
 set -uo pipefail
 
 FLATPAK_APP="md.obsidian.Obsidian"
+PROBE_TIMEOUT="${OBS_PROBE_TIMEOUT:-6}"    # readiness check
+CMD_TIMEOUT="${OBS_TIMEOUT:-120}"          # real commands
+START_TIMEOUT="${OBS_START_TIMEOUT:-45}"   # cold GUI start
 
 run_cli() {
+  local t="$1"; shift
   # Filter stderr via process substitution so the CLI's own exit code survives
   # (piping through grep would replace it with grep's).
-  flatpak run --command=obsidian.sh "$FLATPAK_APP" "$@" \
+  timeout "$t" flatpak run --command=obsidian.sh "$FLATPAK_APP" "$@" \
     2> >(grep -vE 'Failed to connect to the bus|dbus/bus\.cc|^\[[0-9]+:[0-9]+' >&2)
 }
+
+# The CLI exits 0 unconditionally, and a half-started app answers every command
+# with empty output - so readiness has to be judged on OUTPUT, not exit status.
+is_ready() { run_cli "$PROBE_TIMEOUT" vault 2>/dev/null | grep -q .; }
 
 if ! command -v flatpak >/dev/null 2>&1 || ! flatpak info "$FLATPAK_APP" >/dev/null 2>&1; then
   echo "obs: Obsidian Flatpak ($FLATPAK_APP) not installed" >&2
   exit 1
 fi
 
-if [ "$#" -eq 0 ]; then
-  run_cli --help
-  exit $?
-fi
-
-# `vault` is the cheapest command that proves the app is up and answering.
-if ! run_cli vault >/dev/null 2>&1; then
+if ! is_ready; then
   echo "obs: starting Obsidian..." >&2
   setsid flatpak run "$FLATPAK_APP" >/dev/null 2>&1 &
-  for _ in $(seq 1 30); do
-    sleep 1
-    run_cli vault >/dev/null 2>&1 && break
+  deadline=$((SECONDS + START_TIMEOUT))
+  until is_ready; do
+    if [ "$SECONDS" -ge "$deadline" ]; then
+      echo "obs: Obsidian did not become ready in ${START_TIMEOUT}s" >&2
+      exit 1
+    fi
+    sleep 2
   done
-  if ! run_cli vault >/dev/null 2>&1; then
-    echo "obs: Obsidian did not become ready in 30s" >&2
-    exit 1
-  fi
 fi
 
-run_cli "$@"
+[ "$#" -eq 0 ] && set -- help
+run_cli "$CMD_TIMEOUT" "$@"
+rc=$?
+# 124 is timeout(1)'s signal that the app wedged mid-command.
+[ "$rc" -eq 124 ] && echo "obs: command timed out after ${CMD_TIMEOUT}s (app wedged?)" >&2
+exit "$rc"
