@@ -32,6 +32,14 @@ tool). Public repo: no personal content, hosts, or secrets belong here.
 ## Lessons (append-only)
 When you make an implementation mistake, add a dated, one-line lesson here so it is
 not repeated.
+- 2026-08-09: Before installing a third-party CLI for an app, check whether the app
+  now ships its own. Obsidian has had a built-in CLI since 1.12.4 and the community
+  `obsidian-cli` renamed itself to `notesmd-cli` because of it - I installed the
+  worse tool without checking, despite the `"cli": true` flag in obsidian.json.
+- 2026-08-09: Obsidian's CLI exits 0 unconditionally and returns EMPTY output when
+  the app is half-started; with no app running it blocks forever. Never gate on `$?`
+  or use it untimed - check for non-empty output and wrap every call in `timeout`.
+  A wrapper's auto-start branch is worthless until tested from a genuinely cold state.
 - 2026-07-25: util-linux `script` is not installed on this machine; to e2e-test
   interactive shell behavior (ble.sh, prompts), spawn `bash -i` under Python's
   `pty` module and assert on the captured escape sequences.
