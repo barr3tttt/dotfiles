@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# gnhf-night: run an overnight gnhf loop with strict default safety caps so a
+# runaway agent cannot drain tokens or spin forever. Override via env or flags.
+#
+# Usage:  gnhf-night "your high-level objective"
+#         GNHF_MAX_ITER=80 GNHF_MAX_TOKENS=8000000 gnhf-night "objective"
+#         gnhf-night --stop-when "all tests pass" "make the suite green"
+set -euo pipefail
+
+MAX_ITER="${GNHF_MAX_ITER:-40}"
+MAX_TOKENS="${GNHF_MAX_TOKENS:-5000000}"
+
+exec gnhf \
+  --max-iterations "$MAX_ITER" \
+  --max-tokens "$MAX_TOKENS" \
+  --prevent-sleep on \
+  "$@"

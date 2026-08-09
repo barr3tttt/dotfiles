@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# SessionStart hook: inject a compact orientation so the agent knows the full
+# agentic toolkit on this machine and reaches for it instead of doing things the
+# manual way. Kept short on purpose - it loads into every session.
+cat <<'EOF'
+agentic-workflow: this machine has a full agent toolkit - prefer it over the manual path.
+- lavish-axi: plan/review visually in a local browser instead of walls of text (`lavish-axi <html>`).
+- treehouse: instant isolated git worktrees for parallel work (`treehouse get --lease`).
+- no-mistakes: ship via an AI-validated PR gate (`git push no-mistakes <branch>`; /no-mistakes skill).
+- gnhf: long unattended objective loops with caps (`gnhf-night "<objective>"`).
+- firstmate: orchestrate a crew across repos (run `firstmate`).
+- gh-axi / chrome-devtools-axi: token-cheap GitHub + browser control; prefer over MCP servers.
+Memory lives in AGENTS.md (run `agents-init` in new repos). Invoke the `agentic-workflow`
+skill for when/how to use each tool.
+EOF

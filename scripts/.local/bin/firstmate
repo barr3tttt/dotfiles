@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Launch the First Mate orchestrator: drop into the firstmate home and start the
+# agent. Talk to it in high-level goals; it runs the crew (tmux windows + treehouse
+# worktrees + no-mistakes gate) for you.
+#
+# Usage:  firstmate            # launch with claude (default)
+#         FIRSTMATE_HOME=/path firstmate
+set -euo pipefail
+HOME_DIR="${FIRSTMATE_HOME:-$HOME/firstmate}"
+if [ ! -d "$HOME_DIR/.git" ]; then
+  echo "firstmate not found at $HOME_DIR. Clone it:" >&2
+  echo "  git clone https://github.com/kunchenguid/firstmate $HOME_DIR" >&2
+  exit 1
+fi
+cd "$HOME_DIR"
+exec "${FIRSTMATE_AGENT:-claude}" "$@"

@@ -60,8 +60,13 @@ __pycache__/
 *.pyc
 
 # --- Local-only overrides ---
+# Targets machine-local override FILES (settings.local.json, local.conf).
+# The negation keeps `*.local` from also swallowing the XDG `.local/` directories
+# in the stow packages (scripts/.local/bin, voice/.local/bin) - those hold tracked
+# scripts. The credential rules above still apply inside them.
 *.local
 local.*
+!**/.local/
 
 # --- macOS wezterm wallpapers (large binaries): keep dir, ignore images ---
 mac/.config/wezterm/backdrops/*

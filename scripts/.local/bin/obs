@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Wrapper for Obsidian's built-in CLI (shipped in Obsidian 1.12.4+).
+# Saves typing the Flatpak incantation, hides the harmless D-Bus warning the
+# sandbox prints on every call, and starts the GUI first if it is not running -
+# the CLI drives the live app, so a closed Obsidian means every command fails.
+set -uo pipefail
+
+FLATPAK_APP="md.obsidian.Obsidian"
+
+run_cli() {
+  # Filter stderr via process substitution so the CLI's own exit code survives
+  # (piping through grep would replace it with grep's).
+  flatpak run --command=obsidian.sh "$FLATPAK_APP" "$@" \
+    2> >(grep -vE 'Failed to connect to the bus|dbus/bus\.cc|^\[[0-9]+:[0-9]+' >&2)
+}
+
+if ! command -v flatpak >/dev/null 2>&1 || ! flatpak info "$FLATPAK_APP" >/dev/null 2>&1; then
+  echo "obs: Obsidian Flatpak ($FLATPAK_APP) not installed" >&2
+  exit 1
+fi
+
+if [ "$#" -eq 0 ]; then
+  run_cli --help
+  exit $?
+fi
+
+# `vault` is the cheapest command that proves the app is up and answering.
+if ! run_cli vault >/dev/null 2>&1; then
+  echo "obs: starting Obsidian..." >&2
+  setsid flatpak run "$FLATPAK_APP" >/dev/null 2>&1 &
+  for _ in $(seq 1 30); do
+    sleep 1
+    run_cli vault >/dev/null 2>&1 && break
+  done
+  if ! run_cli vault >/dev/null 2>&1; then
+    echo "obs: Obsidian did not become ready in 30s" >&2
+    exit 1
+  fi
+fi
+
+run_cli "$@"

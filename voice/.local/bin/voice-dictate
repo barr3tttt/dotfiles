@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# voice-dictate: Whisper-based push-to-talk dictation for Fedora / KDE / Wayland.
+# An OpenSuperWhisper-style workflow rebuilt from Linux parts.
+#
+# TOGGLE behavior: bind this single command to a KDE global shortcut.
+#   1st press  -> start recording (mic -> temp wav via pw-record)
+#   2nd press  -> stop, transcribe with whisper.cpp (+ custom vocab), then type
+#                 the text into the focused window via ydotool (clipboard fallback).
+#
+# Config:
+#   WHISPER_MODEL   default ~/.local/share/whisper.cpp/models/ggml-base.en.bin
+#   VOICE_VOCAB     default ~/.config/voice/vocab.txt  (Whisper initial prompt)
+#   YDOTOOL_SOCKET  honored if set (for ydotool injection)
+set -uo pipefail
+
+STATE_DIR="${XDG_RUNTIME_DIR:-/tmp}/voice-dictate"
+mkdir -p "$STATE_DIR"
+WAV="$STATE_DIR/rec.wav"
+PIDF="$STATE_DIR/rec.pid"
+
+MODEL="${WHISPER_MODEL:-$HOME/.local/share/whisper.cpp/models/ggml-base.en.bin}"
+VOCABF="${VOICE_VOCAB:-$HOME/.config/voice/vocab.txt}"
+WHISPER="${WHISPER_BIN:-$HOME/.local/bin/whisper-cli}"
+
+# suppress-sound: the notification ding would be picked up by the mic mid-recording
+notify() { command -v notify-send >/dev/null 2>&1 && notify-send -h boolean:suppress-sound:true -t "${2:-2000}" "Dictation" "$1" >/dev/null 2>&1 || true; }
+
+inject() {
+  local text="$1"
+  [ -z "$text" ] && { notify "No speech detected"; return 0; }
+  # Primary: type into the focused window via ydotool (Wayland-capable).
+  if command -v ydotool >/dev/null 2>&1; then
+    local sock="${YDOTOOL_SOCKET:-/run/ydotoold.socket}"
+    if [ -S "$sock" ]; then
+      YDOTOOL_SOCKET="$sock" ydotool type -- "$text" && return 0
+    fi
+  fi
+  # Fallback: put it on the clipboard so you can paste with Ctrl+V.
+  if command -v wl-copy >/dev/null 2>&1; then
+    printf '%s' "$text" | wl-copy
+    notify "Copied to clipboard (Ctrl+V to paste) - ydotoold not running" 3000
+    return 0
+  fi
+  printf '%s\n' "$text"
+}
+
+start_recording() {
+  : > "$WAV"
+  if command -v pw-record >/dev/null 2>&1; then
+    pw-record --rate 16000 --channels 1 --format s16 "$WAV" >/dev/null 2>&1 &
+  elif command -v parecord >/dev/null 2>&1; then
+    parecord --rate=16000 --channels=1 --format=s16le "$WAV" >/dev/null 2>&1 &
+  elif command -v arecord >/dev/null 2>&1; then
+    arecord -r 16000 -c 1 -f S16_LE "$WAV" >/dev/null 2>&1 &
+  else
+    notify "No recorder (pw-record/parecord/arecord)"; exit 1
+  fi
+  echo $! > "$PIDF"
+  notify "Recording... press the shortcut again to stop" 4000
+}
+
+stop_and_transcribe() {
+  local pid; pid="$(cat "$PIDF" 2>/dev/null)"
+  rm -f "$PIDF"
+  if [ -n "$pid" ]; then kill -INT "$pid" 2>/dev/null; sleep 0.4; kill -KILL "$pid" 2>/dev/null; fi
+  if [ ! -s "$WAV" ]; then notify "Empty recording"; exit 0; fi
+  notify "Transcribing..." 1500
+  local prompt=""
+  [ -f "$VOCABF" ] && prompt="$(tr '\n' ' ' < "$VOCABF")"
+  local text
+  text="$("$WHISPER" -m "$MODEL" -f "$WAV" -nt -np ${prompt:+--prompt "$prompt"} 2>/dev/null \
+          | sed 's/^[[:space:]]*//; s/[[:space:]]*$//' | tr -s ' ' | paste -sd ' ' -)"
+  inject "$text"
+}
+
+if [ -f "$PIDF" ] && kill -0 "$(cat "$PIDF" 2>/dev/null)" 2>/dev/null; then
+  stop_and_transcribe
+else
+  start_recording
+fi

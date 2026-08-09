@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# agents-init: scaffold agent-agnostic memory in the current project.
+# Creates AGENTS.md from the template (if missing) and symlinks the
+# per-agent memory files (CLAUDE.md, GEMINI.md) to it so every harness
+# shares one source of truth.
+set -euo pipefail
+
+TEMPLATE="$HOME/dotfiles/agents/AGENTS.project.template.md"
+[ -f "$TEMPLATE" ] || TEMPLATE="$HOME/.config/agents/AGENTS.project.template.md"
+
+if [ ! -f AGENTS.md ]; then
+  if [ -f "$TEMPLATE" ]; then
+    sed "s/<PROJECT_NAME>/$(basename "$PWD")/" "$TEMPLATE" > AGENTS.md
+  else
+    printf '# %s\n\n## Lessons (append-only)\n- (none yet)\n' "$(basename "$PWD")" > AGENTS.md
+  fi
+  echo "created AGENTS.md"
+else
+  echo "AGENTS.md already exists, leaving it"
+fi
+
+for f in CLAUDE.md GEMINI.md; do
+  if [ -L "$f" ] || [ ! -e "$f" ]; then
+    ln -sf AGENTS.md "$f"
+    echo "linked $f -> AGENTS.md"
+  else
+    echo "WARN: $f exists as a real file; not overwriting"
+  fi
+done
+echo "done. Edit AGENTS.md to fill in project details."

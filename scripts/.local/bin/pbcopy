@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# macOS pbcopy shim for Wayland (KDE). Reads stdin to the clipboard via wl-copy,
+# falling back to xclip on X11. Lets mac-targeted scripts/agents work on Fedora.
+if command -v wl-copy >/dev/null 2>&1 && [ -n "${WAYLAND_DISPLAY:-}" ]; then
+  exec wl-copy
+elif command -v xclip >/dev/null 2>&1; then
+  exec xclip -selection clipboard
+elif command -v wl-copy >/dev/null 2>&1; then
+  exec wl-copy
+else
+  echo "pbcopy shim: no clipboard tool (install wl-clipboard or xclip)" >&2
+  exit 1
+fi

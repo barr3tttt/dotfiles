@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# macOS pbpaste shim for Wayland (KDE). Writes the clipboard to stdout via
+# wl-paste, falling back to xclip on X11.
+if command -v wl-paste >/dev/null 2>&1 && [ -n "${WAYLAND_DISPLAY:-}" ]; then
+  exec wl-paste --no-newline
+elif command -v xclip >/dev/null 2>&1; then
+  exec xclip -selection clipboard -o
+elif command -v wl-paste >/dev/null 2>&1; then
+  exec wl-paste --no-newline
+else
+  echo "pbpaste shim: no clipboard tool (install wl-clipboard or xclip)" >&2
+  exit 1
+fi
