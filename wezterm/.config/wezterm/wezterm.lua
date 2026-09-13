@@ -92,7 +92,7 @@ config.audible_bell = 'Disabled'
 -- stock KWin blur ignores apps that don't request it (WezTerm doesn't).
 -- Lower OPACITY = more see-through. tmux pane bodies use the default background,
 -- which inherits this translucency; the Dracula status bar stays solid on top.
-local OPACITY = 0.78
+local OPACITY = 0.88
 config.window_background_opacity = OPACITY
 config.macos_window_background_blur = 20  -- macOS only; ignored elsewhere
 
