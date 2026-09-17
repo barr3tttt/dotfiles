@@ -48,3 +48,13 @@ if [[ $- == *i* ]] && [[ -z "$TMUX" ]] && [[ -z "$CLAUDECODE" ]] \
    && [[ "$(tput lines 2>/dev/null || echo 0)" -ge 10 ]]; then
   tmux attach -t main 2>/dev/null || tmux new -s main
 fi
+
+# ---------------------------------------------------------------- opencode
+# Installed via the official installer to ~/.opencode/bin (--no-modify-path, so
+# PATH is managed here rather than appended to ~/.bashrc).
+[ -d "$HOME/.opencode/bin" ] && PATH="$HOME/.opencode/bin:$PATH"
+# Gates opencode's built-in websearch tool (Exa's hosted MCP). Without this the
+# tool is restricted to the OpenCode-hosted providers, so local models get no
+# search at all. (brave-search MCP is configured but DISABLED - its 117KB of
+# tool schemas dominated the prompt and Exa covers the same need.)
+export OPENCODE_ENABLE_EXA=1
