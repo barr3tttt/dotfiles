@@ -1,11 +1,10 @@
 {
-  "permissions": {
-    "defaultMode": "bypassPermissions"
-  },
-  "model": "claude-fable-5[1m]",
   "env": {
     "EDITOR": "nvim",
     "VISUAL": "nvim"
+  },
+  "permissions": {
+    "defaultMode": "auto"
   },
   "hooks": {
     "SessionStart": [
@@ -54,7 +53,8 @@
   "statusLine": {
     "type": "command",
     "command": "node ~/.claude/statusline.mjs",
-    "padding": 0
+    "padding": 0,
+    "refreshInterval": 10
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
@@ -70,5 +70,6 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
