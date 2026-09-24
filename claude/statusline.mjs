@@ -164,11 +164,25 @@ function ago(ms) {
   return h < 48 ? h + 'h' : Math.floor(h / 24) + 'd';
 }
 
+// Captain calls come from firstmate's own published home summary: each open
+// decision is a backlog task held for the captain, which a crew's last status
+// line cannot show (a finished crew awaiting a merge or a go still reads "done").
+// Ignored when missing, unparseable, or more than six hours old.
+function captainCalls() {
+  try {
+    const d = JSON.parse(readFileSync(join(HOME, 'state', 'home-summary.json'), 'utf8'));
+    if (!d || !Array.isArray(d.decisions_open)) return [];
+    if (d.generated_epoch && Date.now() / 1000 - d.generated_epoch > 6 * 3600) return [];
+    return d.decisions_open.filter((x) => x && x.id && (x.hold_bucket || 'live') === 'live').map((x) => x.id);
+  } catch { return []; }
+}
+
 function crewLine(columns) {
   let metas;
   try { metas = readdirSync(join(HOME, 'state')).filter((f) => f.endsWith('.meta')); }
   catch { return ''; }
-  if (!metas.length) return '';
+  const calls = new Set(captainCalls());
+  if (!metas.length && !calls.size) return '';
 
   const live = livePanes();
   const now = Date.now();
@@ -181,7 +195,8 @@ function crewLine(columns) {
     const statusPath = join(HOME, 'state', id + '.status');
     const last = tailLine(statusPath);
     const verb = (last.split(':')[0] || '').trim().split(/\s+/)[0];
-    const st = STATES[verb] || { g: '·', c: DIM, rank: 6, live: true };
+    // A crew whose task is held for the captain needs him, whatever its last line says.
+    const st = calls.has(id) ? STATES['needs-decision'] : (STATES[verb] || { g: '·', c: DIM, rank: 6, live: true });
 
     let idle = null;
     try { idle = now - statSync(statusPath).mtimeMs; } catch {}
@@ -192,13 +207,20 @@ function crewLine(columns) {
     const { project, stem } = parseId(id);
     rows.push({ id, st, dead, idle, project, stem });
   }
+  // Captain calls with no crew behind them (a login, a pick, a merge already handed back).
+  const crewIds = new Set(rows.map((r) => r.id));
+  for (const id of calls) {
+    if (crewIds.has(id)) continue;
+    const { project, stem } = parseId(id);
+    rows.push({ id, st: { ...STATES['needs-decision'], live: false }, dead: false, idle: null, project, stem });
+  }
   if (!rows.length) return '';
 
   rows.sort((a, b) => (a.dead === b.dead ? a.st.rank - b.st.rank : a.dead ? -1 : 1));
 
   const working = rows.filter((r) => r.st.live && !r.dead).length;
   const attention = rows.filter((r) => r.dead || r.st.rank <= 2).length;
-  const head = `⚓ ${working} working` + (attention ? ` ${'\x1b[31m'}${attention} need you${RESET}` : '');
+  const head = `⚓ ${working} working` + (attention ? `${DIM} · ${RESET}${'\x1b[31m'}${attention} need you${RESET}` : '');
 
   const projects = new Set(rows.map((r) => r.project).filter(Boolean));
   const showProject = projects.size > 1;
