@@ -52,9 +52,9 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "node ~/.claude/statusline.mjs",
+    "command": "bash ~/.claude/statusline.sh",
     "padding": 0,
-    "refreshInterval": 10
+    "refreshInterval": 5
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
