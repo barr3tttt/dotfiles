@@ -52,6 +52,7 @@ mkdir -p "$HOME/.claude/skills"
 ln -sfn "$DF/skills/e2e-testing" "$HOME/.claude/skills/e2e-testing"
 # Claude Code status line (see claude/README.md for the settings.json snippet)
 ln -sf "$DF/claude/statusline.mjs" "$HOME/.claude/statusline.mjs"
+ln -sf "$DF/claude/statusline.sh" "$HOME/.claude/statusline.sh"
 ln -sf "$DF/claude/settings.json" "$HOME/.claude/settings.json"
 
 echo "== 8. tmux plugins (tpm + resurrect + continuum) and sessionizer =="
