@@ -52,9 +52,9 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash ~/.claude/statusline.sh",
+    "command": "node ~/.claude/statusline.mjs",
     "padding": 0,
-    "refreshInterval": 5
+    "refreshInterval": 10
   },
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
@@ -70,6 +70,6 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "inputNeededNotifEnabled": true
 }
