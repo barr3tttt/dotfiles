@@ -64,3 +64,9 @@ ble-face vbell_erase='bg=#282a36'
 _ble_contrib_fzf_base=/usr/share/fzf
 ble-import -d integration/fzf-completion
 ble-import -d integration/fzf-key-bindings
+
+# --- paste protection ------------------------------------------------------
+# Off: automated tools (firstmate worker launches) type multi-line commands into
+# fresh shells, and the default threshold made Enter insert a newline instead of
+# running them. Negative disables the fast-input heuristic.
+bleopt accept_line_threshold=-1
